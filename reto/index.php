@@ -30,7 +30,7 @@
         
             <div  class="contenedor">
             <h2>INICIAR SESIÓN</h2><br><br>
-                <form action="inicioSesion.php" method="post">
+                <form action="inicioSesion" method="post">
 
                     <label for="">USUARIO:</label><br>
                     <input type="text" name="user" id="pass"><br><br>

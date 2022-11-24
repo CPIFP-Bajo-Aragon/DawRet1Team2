@@ -19,7 +19,7 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
     //print_r ($query);
     $query->execute();
     
-    header("Location:listaPantallas.php");
+    header("Location:listaPantallas");
 
   
 

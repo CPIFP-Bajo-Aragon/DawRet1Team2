@@ -23,7 +23,7 @@ $ubi=$_POST["ubi"];
 
 $sql = "INSERT INTO Pantalla(Nombre,Identificador,Ubicacion) values ('$nombreP', '$id', '$ubi')";
 if (mysqli_query($conn, $sql)) {
-      header("Location:listaPantallas.php");
+      header("Location:listaPantallas");
       
 } else {
       echo "Error: " . $sql . "<br>" . mysqli_error($conn);

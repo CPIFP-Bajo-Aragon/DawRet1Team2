@@ -40,7 +40,7 @@ if (!$conn) {
      
 
      if (mysqli_query($conn, $consulta)) {
-        header("Location:pagina.php");
+        header("Location:pagina");
         
      } else {
         echo "Error: " . $consulta . "<br>" . mysqli_error($conn);

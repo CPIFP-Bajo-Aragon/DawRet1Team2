@@ -16,6 +16,7 @@ require "conection.php";
       <!-- CSS -->
 
       <link rel="stylesheet" href="css/estilos.css">
+      <link rel="stylesheet" href="css/formulario.css">
 
       <!-- ICONO DE PAGINA -->
       <link rel="shortcut icon" href="images/logo.png">
@@ -26,7 +27,7 @@ require "conection.php";
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
       <!-- TÍTULO -->
-      <title>Inicio</title>
+      <title>Gestionar Departamentos</title>
       
   </head>
 
@@ -120,59 +121,114 @@ require "conection.php";
   <!----------- FIN DE CABECERA Y MENÚ ----------->
 
   <!----------- CONTENIDO DE LA PÁGINA ----------->
-  <div class="pagina">
 
-      <div  class="contenedor">
 
-        <div class="contenido">
+<div class="pagina">
 
-          <!-- AQUÍ VAN LAS NOTICIAS -->
+    
+<div class="buscador">
 
-          <h2>Mi Perfil</h2>
-          <br>
+<form action="buscadorDepartamento" method="POST">
 
-            <?php
+  <input type="text" name="texto" id="texto">
+  <input type="submit" name="search" id="search" value="BUSCAR">
 
-              $usuario = 'root';
-              $password = 'Admin1234';
-              $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
-              //Consulta
-              $consulta=$db->prepare("SELECT ID_Usuario, Nom_Usuario, Pass_user, Rol.Nombre as Nombre_Rol, Departamento.Nombre as Nombre_Departamento, Correo_Usuario FROM Usuario, Departamento, Rol WHERE Usuario.ID_Rol=Rol.ID_Rol and Usuario.ID_Departamento=Departamento.ID_Departamento;");
-              $consulta->execute();
-              
+</form>
 
-              echo '<h5>Nombre Usuario: </h5><p>'.$_SESSION['nombre'].'</p>';
-              echo '<h5>Nombre Completo: </h5><p>'.$_SESSION['comp'].'</p>';
-              echo '<h5>ID de Usuario: </h5><p>'.$_SESSION['id'].'</p>';
-              echo '<h5>Correo Electrónico:</h5><p>'.$_SESSION['correo'].'</p>';
-              echo '<h5>Departamento: </h5><p>'.$_SESSION['dep'].'</p>';
-              echo '<h5>Rol de Usuario:</h5><p>'.$_SESSION['nomRol'].'</p>';
-              
+</div>
 
-              
-              
+<?php
+            //Si se ha pulsado el botón de buscar
+            if (isset($_POST['search'])) {
 
+
+                //Recogemos las claves enviadas
+                $keywords = $_POST['texto'];
+
+                //Conectamos con la base de datos en la que vamos a buscar
+                $usuario = 'root';
+                $password = 'Admin1234';
+                $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
+                
+
+
+                $consulta = $db->prepare("SELECT ID_Departamento, Nombre
+                                          FROM Departamento
+                                          WHERE (Nombre LIKE '%".$keywords."%')");
+                $consulta->execute();
+                $data=$consulta->fetchAll();
+
+
+               echo '<button id="add-btn" onclick="window.modal.showModal();">Añadir Departamento</button><br><br>';
+
+                //Si ha resultados
+                if (empty($data)) {
+                    echo '<h2>Resultados</h2>';
+                    echo '<h3>No se encuentran resultados con los criterios de búsqueda.</h3>';
+                    
+                }
+                else {
+                    //Si no hay registros encontrados
+                    echo '<h2>Resultados</h2>';
+
+                    echo '<table>';
+                    echo '<tr><th>Nombre</th><th>Eliminar</th></tr>';
+                    //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
+                    
+                    foreach ($data as $valores):
+                      echo '<tr><td>'. $valores['Nombre'] .'</td><td><a href="editarDepartamentoForm.php?id='.$valores['ID_Departamento'].'" ><img src="img/icons8-lápiz-64.png" height="32px""></a><a onclick="confirmar(event)" href="borrarDepartamento.php?id='.$valores["ID_Departamento"].'"><img src="images/icons8-eliminar-96.png" height="32px""></a></td></tr>';
+                    endforeach;
+  
+                    echo '</table>';
+                }
+            }
             ?>
 
-          
+              <dialog id="modal">
 
-      </div>
+              <h3>AÑADIR Departamento <button  onclick="window.modal.close();"> X </button></h3><br>
+              <form action="funcionAddDepartamento" method="post">
+
+                  <label for="">Nombre: </label><br>
+                  <input type="text" name="nombre" id="nombre"><br><br>
+                  
+                  
+                  <input type="submit" name="enviar" id="enviar" value="REGISTRAR">
+                  <input type="reset" name="reeset" id="reset" value="RESET">
+
+                </form>
+                    
+              </dialog>
+
+                
+                <!--Funcion javascript para confirmar si queremos borrar, si le damos a cancelar se ejecuta el prevendefult que cancela el evento de borrar  -->
+                <script>
+                    function confirmar(e){
+                        var res = confirm('¿Estas seguro de que quieres BORRAR este departamento?');
+                        if(res == false){
+                            e.preventDefault();
+                        }
+                    }
+                </script>
+            
+
 
   <!----------- FIN DE CONTENIDO DE LA PÁGINA ----------->
 
   <!----------- FOOTER ----------->
 
 
-  <div class="pie-de-pagina">
-    <footer>
-    © Copyright 2022:  
-    <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
-    INFOJOVE
-    </footer>
-  </div>
+      <div class="pie-de-pagina">
+        <footer>
+        © Copyright 2022:  
+        <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
+        INFOJOVE
+        </footer>
+      </div>
 
   <!----------- FIN DEL FOOTER ----------->
 
-  </div>
-  </body>
+</div>
+</body>
 </html>
+

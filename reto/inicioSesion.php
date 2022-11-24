@@ -45,7 +45,7 @@
                     $_SESSION['id']=$fila->ID_Usuario;
                     $_SESSION['rol']=$fila->ID_Rol;
                     $_SESSION['nombre']=$fila->Nom_Usuario;
-                    header("Location:pagina.php");
+                    header("Location:pagina");
                     
                     
                     
@@ -62,13 +62,13 @@
                     
                     </main>
                     <?php
-                        header("refresh:4;url=index.php");
+                        header("refresh:4;url=index");
                 else : 
                     ?>
                         <p>Ha ocurrido un error fatal, contacte con el root.</p>
                         <p>Redirigiendo en 3 segundos.</p>
                     <?php
-                    header("refresh:4;url=index.php");
+                    header("refresh:4;url=index");
                 endif;
 
         $conexion = null;

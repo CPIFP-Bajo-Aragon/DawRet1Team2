@@ -5,36 +5,35 @@ session_start();
 require "conection.php";
 
 ?>
-
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Pantalla</title>
+    
+    <!-- CSS -->
 
-      <!-- CSS -->
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/formulario.css"> 
 
-      <link rel="stylesheet" href="css/estilos.css">
+    <!-- ICONO DE PAGINA
+    -->
+    <link rel="shortcut icon" href="images/logo.png">
 
-      <!-- ICONO DE PAGINA -->
-      <link rel="shortcut icon" href="images/logo.png">
+    <!-- BOOTSTRAP -->
 
-      <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- TÍTULO -->
+    <title>Editar Pantalla</title>
+</head>
+<body>
+     <!----------- CABECERA Y MENÚ ----------->
 
-      <!-- TÍTULO -->
-      <title>Inicio</title>
-      
-  </head>
-
-  <body>
-  
-  <!----------- CABECERA Y MENÚ ----------->
-
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
       <a class="navbar-brand" href="pagina">
         <img src="images/logo.png" height="50px">
@@ -117,62 +116,75 @@ require "conection.php";
     </div>
   </nav>
 
-  <!----------- FIN DE CABECERA Y MENÚ ----------->
+<!----------- FIN DE CABECERA Y MENÚ ----------->
 
-  <!----------- CONTENIDO DE LA PÁGINA ----------->
-  <div class="pagina">
+<!----------- CONTENIDO DE LA PÁGINA ----------->
 
-      <div  class="contenedor">
+<?php
+$usuario = 'root';
+$password = 'Admin1234';
+$db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
+    
+    $id=$_GET['id'];
 
-        <div class="contenido">
+    $consulta= $db->prepare("SELECT * FROM Pantalla WHERE ID_Pantalla='$id'");
+    $consulta->execute();
+    $data2=$consulta->fetchAll();
+    
+    //print_r($data2);
 
-          <!-- AQUÍ VAN LAS NOTICIAS -->
+?>
 
-          <h2>Mi Perfil</h2>
-          <br>
+<div class="pagina">
+    <div class="flex-supremo">
+        <div class="flex-container">
+            <div class="contenedor">
+            <h3><a href="listaPantallas"><img src="img/atras.png" height="32px" ></a>EDITAR PANTALLA </h3><br>
+            
+            
+                <form action="editarPantalla.php?id=" method="POST">
 
-            <?php
+                <!-- <label for="">ID: </label><br> -->
+                <input type="hidden" name="ID_Pantalla" id="ID_Pantalla" autofocus="autofocus" value="<?php echo $data2[0]["ID_Pantalla"];?>">
 
-              $usuario = 'root';
-              $password = 'Admin1234';
-              $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
-              //Consulta
-              $consulta=$db->prepare("SELECT ID_Usuario, Nom_Usuario, Pass_user, Rol.Nombre as Nombre_Rol, Departamento.Nombre as Nombre_Departamento, Correo_Usuario FROM Usuario, Departamento, Rol WHERE Usuario.ID_Rol=Rol.ID_Rol and Usuario.ID_Departamento=Departamento.ID_Departamento;");
-              $consulta->execute();
-              
+                <label for="">Nombre: </label><br>
+                <input type="text" name="Nombre" id="Nombre" value="<?php echo $data2[0]["Nombre"];?>"><br><br>
 
-              echo '<h5>Nombre Usuario: </h5><p>'.$_SESSION['nombre'].'</p>';
-              echo '<h5>Nombre Completo: </h5><p>'.$_SESSION['comp'].'</p>';
-              echo '<h5>ID de Usuario: </h5><p>'.$_SESSION['id'].'</p>';
-              echo '<h5>Correo Electrónico:</h5><p>'.$_SESSION['correo'].'</p>';
-              echo '<h5>Departamento: </h5><p>'.$_SESSION['dep'].'</p>';
-              echo '<h5>Rol de Usuario:</h5><p>'.$_SESSION['nomRol'].'</p>';
-              
+                <label for="">Identificador: </label><br>
+                <input type="text" name="Identificador" id="Identificador" value="<?php echo $data2[0]["Identificador"];?>"><br><br>
 
-              
-              
+                <label for="">Ubicacion: </label>
+                <select name="Ubicacion" id="Departamento">
+                        
+                <?php
 
-            ?>
+                  $usuario = 'root';
+                  $password = 'Admin1234';
+                  
+                  $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 
-          
+                  $query = $db->prepare("SELECT * FROM Departamento");
+                  $query->execute();
+                  $data = $query->fetchAll();
 
-      </div>
+                  foreach ($data as $valores):
+                    echo '<option >'.$valores["Nombre"].'</option>';
+                  endforeach;
 
-  <!----------- FIN DE CONTENIDO DE LA PÁGINA ----------->
+                  ?>
 
-  <!----------- FOOTER ----------->
+                </select><br><br>
+
+                <input type="submit" name="enviar" id="enviar" value="ENVIAR">
+                <input type="reset" name="reeset" id="reset" value="RESET">
+
+                </form>
 
 
-  <div class="pie-de-pagina">
-    <footer>
-    © Copyright 2022:  
-    <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
-    INFOJOVE
-    </footer>
-  </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-  <!----------- FIN DEL FOOTER ----------->
-
-  </div>
-  </body>
+</body>
 </html>

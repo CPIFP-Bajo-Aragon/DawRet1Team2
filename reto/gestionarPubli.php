@@ -36,7 +36,7 @@ require "conection.php";
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
-      <a class="navbar-brand" href="pagina.php">
+      <a class="navbar-brand" href="pagina">
         <img src="images/logo.png" height="50px">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,10 +45,10 @@ require "conection.php";
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="pagina.php">Inicio</a>
+            <a class="nav-link" aria-current="page" href="pagina">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="formulario.php">Formulario</a>
+            <a class="nav-link" href="formulario">Nueva Publicación</a>
           </li>
           <?php
 
@@ -58,14 +58,14 @@ require "conection.php";
 
           }else{
             echo '<li class="nav-item">';
-            echo '<a class="nav-link" href="historico.php">Historico</a>';
+            echo '<a class="nav-link" href="historico">Historico</a>';
             echo '</li>';
 
           }
 
           ?>
           <li class="nav-item">
-            <a class="nav-link" href="departamentos.php">Departamentos</a>
+            <a class="nav-link" href="departamentos">Ubicaciones</a>
           </li>
           <li class="nav-item dropdown">
 
@@ -85,25 +85,25 @@ require "conection.php";
             if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
               echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil.php">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion.php">Cerrar Sesión</a></li>';
+              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
               echo '</ul>';
 
             } else {
     
               echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil.php">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion.php">Cerrar Sesión</a></li>';
+              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
               echo  '<li>';
               echo  '<hr class="dropdown-divider">';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli.php">Gestionar Publicaciones</a></li>';
+              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaUsers.php">Gestionar Usuarios</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaPantallas.php">Gestionar Pantallas</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos.php">Gestionar Departamentos</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
               echo '</ul>';
 
             }
@@ -136,7 +136,7 @@ require "conection.php";
               $password = 'Admin1234';
               $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
               //Consulta
-              $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario and Estado='Pendiente'");
+              $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario and Estado='Pendiente' ORDER BY ID_Publicacion DESC");
               $consulta->execute();
               $data=$consulta->fetchAll();
               if (isset($_SESSION["rol"]) && $_SESSION["rol"]==1) {
@@ -153,7 +153,6 @@ require "conection.php";
                   echo '<div class="imagen-noticia"><img id="img-bd" src="'.$valores['Multimedia'].'"></div>';
                   echo  '<br>';
                   echo '<p style="text-align:center;">';
-                  echo '<a href="editarAdministrador.php?id='.$valores["ID_Publicacion"].'"><button id="edt-btn">EDITAR</button></a>';
                   echo '<a href="aceptarPublicacion.php?id='.$valores["ID_Publicacion"].'"><button id="act-btn">ACEPTAR</button></a>';
                   echo '<a href="rechazarPublicacion.php?id='.$valores["ID_Publicacion"].'"><button id="rchz-btn">RECHAZAR</button></a>';
                   echo '</p>';
@@ -180,7 +179,7 @@ require "conection.php";
 
               //Compreba si $data esta vacio, si esta te lleva a la pagina reloj.php
               if (empty($data)) {
-                header("Location:reloj.php");
+                header("Location:reloj");
                 exit();
               }
             }

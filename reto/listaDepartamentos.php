@@ -37,7 +37,7 @@ require "conection.php";
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
-      <a class="navbar-brand" href="pagina.php">
+      <a class="navbar-brand" href="pagina">
         <img src="images/logo.png" height="50px">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,27 +46,27 @@ require "conection.php";
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="pagina.php">Inicio</a>
+            <a class="nav-link" aria-current="page" href="pagina">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="formulario.php">Formulario</a>
+            <a class="nav-link" href="formulario">Nueva Publicación</a>
           </li>
           <?php
 
           if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
-          
+           
 
           }else{
             echo '<li class="nav-item">';
-            echo '<a class="nav-link" href="historico.php">Historico</a>';
+            echo '<a class="nav-link" href="historico">Historico</a>';
             echo '</li>';
 
           }
 
           ?>
           <li class="nav-item">
-            <a class="nav-link" href="departamentos.php">Departamentos</a>
+            <a class="nav-link" href="departamentos">Ubicaciones</a>
           </li>
           <li class="nav-item dropdown">
 
@@ -86,25 +86,25 @@ require "conection.php";
             if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
               echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil.php">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion.php">Cerrar Sesión</a></li>';
+              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
               echo '</ul>';
 
             } else {
     
               echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil.php">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion.php">Cerrar Sesión</a></li>';
+              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
               echo  '<li>';
               echo  '<hr class="dropdown-divider">';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli.php">Gestionar Publicaciones</a></li>';
+              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaUsers.php">Gestionar Usuarios</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaPantallas.php">Gestionar Pantallas</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos.php">Gestionar Departamentos</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
               echo '</ul>';
 
             }
@@ -125,14 +125,23 @@ require "conection.php";
 
 <div class="pagina">
 
-    
+<div class="buscador">
 
-            <button id="add-btn" onclick="window.modal.showModal();">Añadir Departamento</button>
+<form action="buscadorDepartamento" method="POST">
+
+  <input type="text" name="texto" id="texto">
+  <input type="submit" name="search" id="search" value="BUSCAR">
+
+</form>
+
+</div>
+
+            <button id="add-btn" onclick="window.modal.showModal();">Añadir Ubicación</button>
 
               <dialog id="modal">
 
-              <h3>AÑADIR Departamento <button  onclick="window.modal.close();"> X </button></h3><br>
-              <form action="funcionAddDepartamento.php" method="post">
+              <h3>AÑADIR UBICACIÓN <button  onclick="window.modal.close();"> X </button></h3><br>
+              <form action="funcionAddDepartamento" method="post">
 
                   <label for="">Nombre: </label><br>
                   <input type="text" name="nombre" id="nombre"><br><br>
@@ -158,11 +167,11 @@ require "conection.php";
                   $data = $query->fetchAll();
 
                   echo '<table>';
-                  echo '<tr><th>Nombre</th><th>Eliminar</th></tr>';
+                  echo '<tr><th>Nombre</th><th>Modificar</th></tr>';
                   //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
                   
                   foreach ($data as $valores):
-                    echo '<tr><td>'. $valores['Nombre'] .'</td><td><a onclick="confirmar(event)" href="borrarDepartamento.php?id='.$valores["ID_Departamento"].'"><img src="images/icons8-eliminar-96.png" height="32px""></a></td></tr>';
+                    echo '<tr><td>'. $valores['Nombre'] .'</td><td><a href="editarDepartamentoForm.php?id='.$valores['ID_Departamento'].'" ><img src="img/icons8-lápiz-64.png" height="32px""></a><a onclick="confirmar(event)" href="borrarDepartamento.php?id='.$valores["ID_Departamento"].'"><img src="images/icons8-eliminar-96.png" height="32px""></a></td></tr>';
                   endforeach;
 
                   echo '</table>';
@@ -170,6 +179,10 @@ require "conection.php";
                  
 
                 ?>
+
+              
+
+
                 <!--Funcion javascript para confirmar si queremos borrar, si le damos a cancelar se ejecuta el prevendefult que cancela el evento de borrar  -->
                 <script>
                     function confirmar(e){

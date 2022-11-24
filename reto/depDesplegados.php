@@ -15,7 +15,7 @@ require "conection.php";
 
       <!-- CSS -->
 
-      <link rel="stylesheet" href="css/estilos.css">
+      <link rel="stylesheet" href="css/departamentos.css">
 
       <!-- ICONO DE PAGINA -->
       <link rel="shortcut icon" href="images/logo.png">
@@ -26,7 +26,7 @@ require "conection.php";
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
       <!-- TÍTULO -->
-      <title>Inicio</title>
+      <title>Departamentos</title>
       
   </head>
 
@@ -65,16 +65,16 @@ require "conection.php";
 
           ?>
           <li class="nav-item">
-            <a class="nav-link" href="departamentos">Ubicaciones</a>
+            <a class="nav-link active" href="departamentos">Ubicaciones</a>
           </li>
           <li class="nav-item dropdown">
 
-            <a class="nav-link dropdown-toggle active"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
+            <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
             
             
             <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
               
-            <?php 
+              <?php 
               
               echo $_SESSION["nombre"];
             
@@ -121,42 +121,101 @@ require "conection.php";
 
   <!----------- CONTENIDO DE LA PÁGINA ----------->
   <div class="pagina">
+            <aside>
+            <div  class="contenedor">
 
+                <ul>
+                    
+                      <?php
+
+                        $usuario = 'root';
+                        $password = 'Admin1234';
+                        
+                        $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
+
+                        $query = $db->prepare("SELECT * FROM Departamento");
+                        $query->execute();
+                        $data = $query->fetchAll();
+
+                        foreach ($data as $valores):
+                          $i=1;
+                          if($i=$valores['ID_Departamento']){
+                            echo '<form action="depDesplegados" method="post">';
+                            echo '<li><input type="submit" name="ubicacion" id="ubicacion" value="'.$valores["Nombre"].'"></li>';
+                            echo '</form>';
+                          }
+                          
+                          $i++;
+                        endforeach;
+
+                      ?>
+                      
+
+                </ul>
+          
+          </div>
+            </aside>
+            <section>
       <div  class="contenedor">
 
         <div class="contenido">
 
           <!-- AQUÍ VAN LAS NOTICIAS -->
 
-          <h2>Mi Perfil</h2>
-          <br>
+          
 
+                    
             <?php
 
+              $ubi=$_POST['ubicacion'];
+              
               $usuario = 'root';
               $password = 'Admin1234';
               $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
               //Consulta
-              $consulta=$db->prepare("SELECT ID_Usuario, Nom_Usuario, Pass_user, Rol.Nombre as Nombre_Rol, Departamento.Nombre as Nombre_Departamento, Correo_Usuario FROM Usuario, Departamento, Rol WHERE Usuario.ID_Rol=Rol.ID_Rol and Usuario.ID_Departamento=Departamento.ID_Departamento;");
+              $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Ubicacion, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario 
+              as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario 
+              FROM Publicacion, Usuario 
+              WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario 
+              AND Fecha_Fin>=CURRENT_DATE() 
+              and Estado='Aceptada' 
+              and Fecha_Inicio<=CURRENT_DATE() 
+              and Ubicacion='$ubi'
+              ORDER BY Fecha_Fin");
+
+
               $consulta->execute();
-              
-
-              echo '<h5>Nombre Usuario: </h5><p>'.$_SESSION['nombre'].'</p>';
-              echo '<h5>Nombre Completo: </h5><p>'.$_SESSION['comp'].'</p>';
-              echo '<h5>ID de Usuario: </h5><p>'.$_SESSION['id'].'</p>';
-              echo '<h5>Correo Electrónico:</h5><p>'.$_SESSION['correo'].'</p>';
-              echo '<h5>Departamento: </h5><p>'.$_SESSION['dep'].'</p>';
-              echo '<h5>Rol de Usuario:</h5><p>'.$_SESSION['nomRol'].'</p>';
-              
+              $data=$consulta->fetchAll();
 
               
-              
-
-            ?>
-
-          
+              echo '<h2>'.$ubi.'</h2>';
+                        
+            
+              foreach ($data as $valores):
+                if(empty($data)){
+                  
+                  echo '<h3>No hay publicaciones</h3>';
+                }else if($ubi=$valores['Ubicacion']){
+                
+                echo '<div class="contenido">';
+                echo '<div class="titulo-noticia">';
+                echo '<p id="expira">Publicado por '.$valores['Nom_Usuario'].' el dia '.$valores['Fecha_Inicio'].'</p>';
+                echo '<p id="expira"> Expira el: '.$valores['Fecha_Fin'].'</p></div>';
+                echo '<h3>'.$valores['Titulo'].'</h3><br>';
+                
+                echo '<p>'.$valores['Descripcion'].'<p>';
+                echo '<div class="imagen-noticia"><img id="img-bd" src="'.$valores['Multimedia'].'"></div>';
+                echo '<hr>';
+                echo '</div>';
+                }
+              endforeach;
+            
+             ?>
+             
+            </div>
 
       </div>
+      </section>
 
   <!----------- FIN DE CONTENIDO DE LA PÁGINA ----------->
 

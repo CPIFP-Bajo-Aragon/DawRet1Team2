@@ -36,7 +36,7 @@ require "conection.php";
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
-      <a class="navbar-brand" href="pagina.php">
+      <a class="navbar-brand" href="pagina">
         <img src="images/logo.png" height="50px">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,10 +45,10 @@ require "conection.php";
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="pagina.php">Inicio</a>
+            <a class="nav-link" aria-current="page" href="pagina">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="formulario.php">Formulario</a>
+            <a class="nav-link" href="formulario">Nueva Publicación</a>
           </li>
           <?php
 
@@ -58,14 +58,14 @@ require "conection.php";
 
           }else{
             echo '<li class="nav-item">';
-            echo '<a class="nav-link" href="historico.php">Historico</a>';
+            echo '<a class="nav-link" href="historico">Historico</a>';
             echo '</li>';
 
           }
 
           ?>
           <li class="nav-item">
-            <a class="nav-link active" href="departamentos.php">Departamentos</a>
+            <a class="nav-link active" href="departamentos">Ubicaciones</a>
           </li>
           <li class="nav-item dropdown">
 
@@ -85,25 +85,25 @@ require "conection.php";
             if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
               echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil.php">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion.php">Cerrar Sesión</a></li>';
+              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
               echo '</ul>';
 
             } else {
     
               echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil.php">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion.php">Cerrar Sesión</a></li>';
+              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
               echo  '<li>';
               echo  '<hr class="dropdown-divider">';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli.php">Gestionar Publicaciones</a></li>';
+              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaUsers.php">Gestionar Usuarios</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaPantallas.php">Gestionar Pantallas</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos.php">Gestionar Departamentos</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
               echo '</ul>';
 
             }
@@ -121,42 +121,80 @@ require "conection.php";
 
   <!----------- CONTENIDO DE LA PÁGINA ----------->
   <div class="pagina">
-            <div class="submenu">
+            <aside>
+            <div  class="contenedor">
+
                 <ul>
-                    <li><a href="departamentos.php">TODAS</a></li>
-                    <li><a href="administracion.php">ADMINISTRACIÓN</a></li>
-                    <li><a href="automocion.php">AUTOMOCIÓN</a></li>
-                    <li><a href="electricidad.php">ELECTRICIDAD</a></li>
-                    <li><a href="informatica.php">INFORMÁTICA</a></li>
-                    <li><a href="sanitaria.php">SANITARIA</a></li>
-                    <li><a href="direccion.php">DIRECCIÓN</a></li>
-                    <li><a href="secretaria.php">SECRETARÍA</a></li>
+                    
+                      <?php
+
+                        $usuario = 'root';
+                        $password = 'Admin1234';
+                        
+                        $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
+
+                        $query = $db->prepare("SELECT * FROM Departamento");
+                        $query->execute();
+                        $data = $query->fetchAll();
+
+                        foreach ($data as $valores):
+                          $i=1;
+                          if($i=$valores['ID_Departamento']){
+                            echo '<form action="depDesplegados" method="post">';
+                            echo '<li><input type="submit" name="ubicacion" id="ubicacion" value="'.$valores["Nombre"].'"></li>';
+                            echo '</form>';
+                          }
+                          
+                          $i++;
+                        endforeach;
+
+                      ?>
+                      
+
                 </ul>
-            </div>
+          
+          </div>
+            </aside>
+            <section>
       <div  class="contenedor">
 
         <div class="contenido">
 
           <!-- AQUÍ VAN LAS NOTICIAS -->
 
-          <h2>TODAS LAS PUBLICACIONES</h2>
+          
 
+                    
             <?php
 
+              
+              
               $usuario = 'root';
               $password = 'Admin1234';
               $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
               //Consulta
-              $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin");
+              $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Ubicacion, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario 
+              as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario 
+              FROM Publicacion, Usuario 
+              WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario 
+              AND Fecha_Fin>=CURRENT_DATE() 
+              and Estado='Aceptada' 
+              and Fecha_Inicio<=CURRENT_DATE() 
+              ORDER BY Fecha_Fin");
+
+
               $consulta->execute();
               $data=$consulta->fetchAll();
-            
 
-            
+              
+              echo '<h2>Todas las publicaciones</h2>';
               foreach ($data as $valores):
+                
+                 
+                
                 echo '<div class="contenido">';
                 echo '<div class="titulo-noticia">';
-                echo '<p id="expira">Publicado por: '.$valores['Nom_Usuario'].'</p>';
+                echo '<p id="expira">Publicado por '.$valores['Nom_Usuario'].' el dia '.$valores['Fecha_Inicio'].'</p>';
                 echo '<p id="expira"> Expira el: '.$valores['Fecha_Fin'].'</p></div>';
                 echo '<h3>'.$valores['Titulo'].'</h3><br>';
                 
@@ -164,23 +202,15 @@ require "conection.php";
                 echo '<div class="imagen-noticia"><img id="img-bd" src="'.$valores['Multimedia'].'"></div>';
                 echo '<hr>';
                 echo '</div>';
+                
               endforeach;
-
-              //Compreba si $data esta vacio, si esta te lleva a la pagina reloj.php
-              if (empty($data)) {
-                header("Location:reloj.php");
-                exit();
-              }
             
-
-            ?>
-
-          <!--Recargas la pagina cada cierto tiempo -->
-          <script type="text/javascript">
-            setTimeout(function(){ location.reload(1);}, 15000);
-          </script>
+             ?>
+             
+            </div>
 
       </div>
+      </section>
 
   <!----------- FIN DE CONTENIDO DE LA PÁGINA ----------->
 

@@ -125,30 +125,90 @@ require "conection.php";
 
 <div class="pagina">
 
-          
+
+<div clas="barra-btn-sch">  
             <div class="buscador">
+
               <form action="buscadorUsuario" method="POST">
+
                 <input type="text" name="texto" id="texto">
                 <input type="submit" name="search" id="search" value="BUSCAR">
+
               </form>
+
             </div>
-            <button id="add-btn" onclick="window.modal.showModal();">Añadir Usuario</button>
+    
+            <?php
+            //Si se ha pulsado el botón de buscar
+            if (isset($_POST['search'])) {
+
+
+                //Recogemos las claves enviadas
+                $keywords = $_POST['texto'];
+
+                //Conectamos con la base de datos en la que vamos a buscar
+                $usuario = 'root';
+                $password = 'Admin1234';
+                $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
+                
+
+
+                $consulta=$db->prepare("SELECT ID_Usuario, Nom_Usuario, Nombre_Completo, Rol.Nombre as Nombre_Rol, Correo_Usuario, Departamento.Nombre as Nombre_Departamento
+                                          FROM Usuario, Departamento, Rol
+                                          WHERE Usuario.ID_Rol=Rol.ID_Rol 
+                                          and Usuario.ID_Departamento=Departamento.ID_Departamento        
+                                          and (Nom_Usuario LIKE '%".$keywords."%'
+                                          OR Nombre_Completo LIKE '%".$keywords."%'
+                                          OR Rol.Nombre LIKE '%".$keywords."%'
+                                          OR Correo_Usuario LIKE '%".$keywords."%'
+                                          OR Departamento.Nombre LIKE '%".$keywords."%')");
+                $consulta->execute();
+                $data=$consulta->fetchAll();
+
+
+                echo '<button id="add-btn" onclick="window.modal.showModal();">Añadir Usuario</button> </div><br><br>';
+
+                //Si ha resultados
+                if (empty($data)) {
+                    echo '<h2>Resultados</h2>';
+                    echo '<h3>No se encuentran resultados con los criterios de búsqueda.</h3>';
+                    
+                }
+                else {
+                    //Si no hay registros encontrados
+                    echo '<h2>Resultados</h2>';
+
+                    echo '<table>';
+                    echo '<tr><th>Usuario</th><th>Nombre Completo</th><th>ROL</th><th>Correo</th><th>Departamento</th><th>Eliminar</th></tr>';
+                    //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
+                    
+                    foreach ($data as $valores):
+                      echo '<tr><td>'. $valores['Nom_Usuario'] .'</td><td>'. $valores['Nombre_Completo'] .'</td><td>'. $valores['Nombre_Rol'] .'</td><td>'. $valores['Correo_Usuario'] .'</td><td>'. $valores['Nombre_Departamento'] .'</td><td><a href="UsuarioEditar.php?id='.$valores["ID_Usuario"].'"><img src="img/icons8-lápiz-64.png" height="32px" "></a><a onclick="confirmar(event)" href="borrarUsuario.php?id='.$valores["ID_Usuario"].'"><img src="images/icons8-eliminar-96.png" height="32px" "></a></td></tr>';
+                    endforeach;
+  
+                    echo '</table>';
+                }
+            }
+            ?>
+
             
-          
+
+       
+
 
               <dialog id="modal">
 
               <h3>AÑADIR USUARIO <button  onclick="window.modal.close();"> X </button></h3><br>
-                    <form action="añadirUsuario" method="post" onsubmit="return validarFormulario()" name="formulario">
+                    <form action="añadirUsuario" method="post">
 
                         <label for="">Nombre Usuario: </label><br>
-                        <input type="text" name="name" id="name" required ><br><br>
+                        <input type="text" name="name" id="name" required><br><br>
                         <label for="">Nombre Completo: </label><br>
-                        <input type="text" name="comp" id="comp" required onkeyup="validarNombreCompleto(this)"><br><br>
+                        <input type="text" name="comp" id="comp" required><br><br>
                         <label for="">Contraseña:</label><br>
                         <input type="password" name="password" required><br><br>
                         <label for="">Correo: </label><br>
-                        <input type="email" name="email" id="email" required onkeyup="validarCorreo(this)"><br><br>
+                        <input type="email" name="email" id="email" pattern=".+@.+[.].+" required><br><br>
                         <label for="">Rol:</label><br>
                         <select name="rol" id="" required>
                         <?php
@@ -187,39 +247,8 @@ require "conection.php";
 
                     </form>
                     
-             
-
-
-
               </dialog>
 
-              
-
-                <?php
-
-                  //Conexion con base de datos
-                  $usuario = 'root';
-                  $password = 'Admin1234';
-                  $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
-                  //Preparamos la consulta y la ejecutamos guardamos su resultado en $data
-                  
-                  $query = $db->prepare("SELECT ID_Usuario, Nom_Usuario, Nombre_Completo, Rol.Nombre as Nombre_Rol, Correo_Usuario,Departamento.Nombre as Nombre_Departamento FROM Usuario, Departamento, Rol WHERE Usuario.ID_Rol=Rol.ID_Rol and Usuario.ID_Departamento=Departamento.ID_Departamento;");
-                  $query->execute();
-                  $data = $query->fetchAll();
-
-                  echo '<table>';
-                  echo '<tr><th>Usuario</th><th>Nombre Completo</th><th>ROL</th><th>Correo</th><th>Departamento</th><th>Modificar</th></tr>';
-                  //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
-                  
-                  foreach ($data as $valores):
-                    echo '<tr><td>'. $valores['Nom_Usuario'] .'</td><td>'. $valores['Nombre_Completo'] .'</td><td>'. $valores['Nombre_Rol'] .'</td><td>'. $valores['Correo_Usuario'] .'</td><td>'. $valores['Nombre_Departamento'] .'</td><td><a href="UsuarioEditar.php?id='.$valores["ID_Usuario"].'"><img src="img/icons8-lápiz-64.png" height="32px" "></a><a onclick="confirmar(event)" href="borrarUsuario.php?id='.$valores["ID_Usuario"].'"><img src="images/icons8-eliminar-96.png" height="32px" "></a></td></tr>';
-                  endforeach;
-
-                  echo '</table>';
-
-                 
-
-                ?>
                 <!--Funcion javascript para confirmar si queremos borrar, si le damos a cancelar se ejecuta el prevendefult que cancela el evento de borrar  -->
                 <script>
                     function confirmar(e){
@@ -229,57 +258,6 @@ require "conection.php";
                         }
                     }
                 </script>
-
-               
-
-                <?php
-
-
-                //Conexion con base de datos
-                $usuario = 'root';
-                $password = 'Admin1234';
-                $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
-                    
-
-                //$id=$_GET['ID_Usuario'];
-                //$id=$_GET['id'];
-
-                    //$consulta= $db->prepare("SELECT * FROM Usuario WHERE ID_Usuario='$id'");
-                    
-                    // $consulta = $db->prepare("SELECT ID_Usuario, Nom_Usuario, Nombre_Completo, Rol.Nombre as Nombre_Rol, Correo_Usuario,Departamento.Nombre as Nombre_Departamento FROM Usuario, Departamento, Rol WHERE Usuario.ID_Rol=Rol.ID_Rol and Usuario.ID_Departamento=Departamento.ID_Departamento;");
-                    // $consulta->execute();
-                    // $data2=$consulta->fetchAll();
-                    
-                    //print_r($data2);
-
-                ?>
-
-                <dialog id="modal2">
-                <h3>EDITAR USUARIO <button  onclick="window.modal2.close();"> X </button></h3><br>
-
-                <form action="editarUsuario.php?id=" method="POST" >
-
-                <label for="">ID: </label><br>
-                <input type="text" name="ID_Usuario" id="ID_Usuario" value="<?php echo $data2[0]["ID_Usuario"];?>"><br><br>
-                
-                <label for="">Nombre de Usuario: </label><br>
-                <input type="text" name="Nom_Usuario" id="Nom_Usuario" value="<?php echo $data2[0]["Nom_Usuario"];?>"><br><br>
-              
-                <label for="">Nombre completo: </label><br>
-                <input type="text" name="Nombre_Completo" id="Nombre_Completo" value="<?php echo $data2[0]["Nombre_Completo"];?>"><br><br>
-
-                <label for="">Correo: </label>
-                <input type="text" name="Correo_Usuario" id="Correo_Usuario" value="<?php echo $data2[0]["Correo_Usuario"];?>"><br><br>
-
-                
-
-                <input type="submit" name="enviar" id="enviar" value="ENVIAR">
-                <input type="reset" name="reeset" id="reset" value="RESET">
-
-                </form>
-
-
-                
          
 
 
@@ -302,48 +280,3 @@ require "conection.php";
   </body>
 </html>
 
-
-<script>
-function validarNombreCompleto(nombre) {
-    var n = nombre.value;
-    var regName = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
-    if (!regName.test(n)) {
-        nombre.style = "border: 1px solid red;";
-        return false;
-    } else {
-        nombre.style = "border: 1px solid green";
-        return true;
-    }
-}
-
-function validarCorreo(correo) {
-
-    var c = correo.value;
-
-    if (!(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(c))) {
-        correo.style = "border: 1px solid red";
-        return false;
-    } else {
-        correo.style = "border: 1px solid green";
-        return true;
-    }
-}
-
-
-
-
-function validarFormulario() {
-    event.preventDefault();
-    
-    var name = document.getElementById('comp');
-    var nbr = validarNombreCompleto(name);
-    var correo = document.getElementById('email');
-    var c = validarCorreo(correo);
-    
-    if (nbr && c) {
-        document.formulario.submit();
-    }else{
-      alert("Error");
-    }
-}
-</script>
