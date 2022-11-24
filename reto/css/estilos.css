@@ -206,32 +206,6 @@ tbody tr:last-of-type {
     color:#ffffff;
 }
 
-/* 
-.submenu a{
-    text-decoration: none;
-    color: inherit;
-    font-size: 14px;
-}
-.submenu li{
-    height: 30px;
-    display:inline-block;
-    width:15%;
-    padding:5px 10px;
-    background-color:#000;
-    border:1px solid #000;
-    text-align:center;
-    color:#fff;
-
-}
-.submenu li:hover{
-    background-color:#fff;
-    color:#000;
-    }
-
-.submenu ul{
-    justify-content: flex-end;
-    display: flex;;
-} */
 
 dialog{
     width: 80%;
@@ -268,10 +242,16 @@ dialog button{
     width: 80%;
     color:#ffffff;
 
-    
+}
+
+
+.barra-btn-sch{
+    display: flex;
+    flex-direction:row;
 }
 
 .buscador form{
+    text-align: center;
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
@@ -280,8 +260,8 @@ dialog button{
     flex: row;
     width: 50%;
     height: 50px;
-    border: 2px solid #e1e1e1;
     padding: 0px;
+    float:right;
 }
 
 .buscador input[type=text]{
@@ -291,17 +271,40 @@ dialog button{
     height: 46px;
     margin-top: 0px;
     width: 100%;
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 2px solid #333;
+
+    box-shadow: none;
 
 }
 
-.buscador input[type=image]{
+.buscador input[type=submit]{
     order: 2;
-    width: 50px;
-    height: 50px;
-    
+    width: 20%;
+    height: 46px;
+    border-radius: 0px;
 
-    
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 2px solid #333;
+    box-shadow: none;
+    color: #333;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 34px;
+    padding: 2px 20px 0;
+    text-shadow: none;
+    text-transform: uppercase;
+    transition: all 0.4s ease 0s;
 
+}
+
+.buscador input[type=submit]:hover{
+    font-weight: bold;
+    background-color: white;
+    transition: 0.5s;
+    color:#e59285;
+    border: 2px solid #e59285;
 }
 
 

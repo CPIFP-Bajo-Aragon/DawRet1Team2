@@ -19,7 +19,7 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
     //print_r ($query);
     $query->execute();
     
-    header("Location:deleteUser.php");
+    header("Location:listaUsers");
 
   
 

@@ -125,8 +125,6 @@ require "conection.php";
 
 <div class="pagina">
 
-    
-    
 <div class="buscador">
 
 <form action="buscadorPantalla" method="POST">
@@ -138,7 +136,56 @@ require "conection.php";
 
 </div>
 
-            <button id="add-btn" onclick="window.modal.showModal();">Añadir Pantalla</button>
+<?php
+            //Si se ha pulsado el botón de buscar
+            if (isset($_POST['search'])) {
+
+
+                //Recogemos las claves enviadas
+                $keywords = $_POST['texto'];
+
+                //Conectamos con la base de datos en la que vamos a buscar
+                $usuario = 'root';
+                $password = 'Admin1234';
+                $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
+                
+
+
+                $consulta = $db->prepare("SELECT ID_Pantalla, Nombre, Identificador, Ubicacion 
+                                          FROM Pantalla
+                                          WHERE (Nombre LIKE '%".$keywords."%'
+                                          OR Identificador LIKE '%".$keywords."%'
+                                          OR Ubicacion LIKE '%".$keywords."%')");
+                $consulta->execute();
+                $data=$consulta->fetchAll();
+
+
+               echo '<button id="add-btn" onclick="window.modal.showModal();">Añadir Pantalla</button><br><br>';
+
+                //Si ha resultados
+                if (empty($data)) {
+                    echo '<h2>Resultados</h2>';
+                    echo '<h3>No se encuentran resultados con los criterios de búsqueda.</h3>';
+                    
+                }
+                else {
+                    //Si no hay registros encontrados
+                    echo '<h2>Resultados</h2>';
+
+                    echo '<table>';
+                  echo '<tr><th>Nombre</th><th>Identificador</th><th>Ubicación</th><th>Eliminar</th></tr>';
+                  //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
+                  
+                  foreach ($data as $valores):
+                    echo '<tr><td>'. $valores['Nombre'] .'</td><td>'. $valores['Identificador'] .'</td><td>'. $valores['Ubicacion'] .'</td><td><a href="pantallaEditar.php?id='.$valores["ID_Pantalla"].'"><img src="img/icons8-lápiz-64.png" height="32px" "></a><a onclick="confirmar(event)" href="borrarPantalla.php?id='.$valores["ID_Pantalla"].'"><img src="images/icons8-eliminar-96.png" height="32px""></a></td></tr>';
+                  endforeach;
+
+                  echo '</table>';
+                }
+            }
+            ?>
+
+            
 
               <dialog id="modal">
 
@@ -146,9 +193,9 @@ require "conection.php";
               <form action="funcionAddPantalla" method="post">
 
                   <label for="">Nombre: </label><br>
-                  <input type="text" name="nombre2" id="nombre2" required><br><br>
+                  <input type="text" name="nombre2" id="nombre2"><br><br>
                   <label for="">Identificador: </label>
-                  <input id="macAddress" type="text" maxlength="17" name="id" id="id" required></input><br><br>
+                  <input id="macAddress" type="text" maxlength="17" name="id" id="id"></input><br><br>
 
                   <script>
                   var macAddress = document.getElementById("macAddress");
@@ -198,31 +245,7 @@ require "conection.php";
                 </form>
                     
               </dialog>
-                <?php
-
-                  //Conexion con base de datos
-                  $usuario = 'root';
-                  $password = 'Admin1234';
-                  $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
-                  //Preparamos la consulta y la ejecutamos guardamos su resultado en $data
-                  
-                  $query = $db->prepare("SELECT ID_Pantalla, Nombre, Identificador, Ubicacion FROM Pantalla;");
-                  $query->execute();
-                  $data = $query->fetchAll();
-
-                  echo '<table>';
-                  echo '<tr><th>Nombre</th><th>Identificador</th><th>Ubicación</th><th>Modificar</th></tr>';
-                  //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
-                  
-                  foreach ($data as $valores):
-                    echo '<tr><td>'. $valores['Nombre'] .'</td><td>'. $valores['Identificador'] .'</td><td>'. $valores['Ubicacion'] .'</td><td><a href="pantallaEditar.php?id='.$valores["ID_Pantalla"].'"><img src="img/icons8-lápiz-64.png" height="32px" "></a><a onclick="confirmar(event)" href="borrarPantalla.php?id='.$valores["ID_Pantalla"].'"><img src="images/icons8-eliminar-96.png" height="32px""></a></td></tr>';
-                  endforeach;
-
-                  echo '</table>';
-
-                 
-
-                ?>
+                
                 <!--Funcion javascript para confirmar si queremos borrar, si le damos a cancelar se ejecuta el prevendefult que cancela el evento de borrar  -->
                 <script>
                     function confirmar(e){
@@ -233,7 +256,7 @@ require "conection.php";
                     }
                 </script>
            
-
+                
 
   <!----------- FIN DE CONTENIDO DE LA PÁGINA ----------->
 

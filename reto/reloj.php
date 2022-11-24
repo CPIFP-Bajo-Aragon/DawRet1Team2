@@ -15,7 +15,7 @@ $consulta->execute();
 $data=$consulta->fetchAll();
     //Compreba si $data esta vacio, si no esta te lleva a la pagina pagina.php
     if (!empty($data)) {
-          header("Location:pagina.php");  
+          header("Location:pagina");  
     }
 
 ?>

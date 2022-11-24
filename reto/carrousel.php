@@ -22,11 +22,11 @@ require "conection.php";
 
       <!-- BOOTSTRAP -->
 
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script> -->
 
       <!-- TÍTULO -->
-      <title>Departamentos</title>
+      <title>Carrousel</title>
       
   </head>
 
@@ -36,7 +36,7 @@ require "conection.php";
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
-      <a class="navbar-brand" href="pagina.php">
+      <a class="navbar-brand" href="pagina">
         <img src="images/logo.png" height="50px">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,10 +45,10 @@ require "conection.php";
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="pagina.php">Inicio</a>
+            <a class="nav-link" aria-current="page" href="pagina">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="formulario.php">Formulario</a>
+            <a class="nav-link" href="formulario">Formulario</a>
           </li>
           <?php
 
@@ -58,14 +58,14 @@ require "conection.php";
 
           }else{
             echo '<li class="nav-item">';
-            echo '<a class="nav-link" href="historico.php">Historico</a>';
+            echo '<a class="nav-link" href="historico">Historico</a>';
             echo '</li>';
 
           }
 
           ?>
           <li class="nav-item">
-            <a class="nav-link" href="departamentos.php">Departamentos</a>
+            <a class="nav-link" href="departamentos">Departamentos</a>
           </li>
           <li class="nav-item dropdown">
 
@@ -85,27 +85,27 @@ require "conection.php";
             if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
               echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil.php">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion.php">Cerrar Sesión</a></li>';
+              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
               echo '</ul>';
 
             } else {
     
               echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil.php">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion.php">Cerrar Sesión</a></li>';
+              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
               echo  '<li>';
               echo  '<hr class="dropdown-divider">';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli.php">Gestionar Publicación</a></li>';
+              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicación</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="añadirUser.php">Añadir Usuario</a></li>';
+              echo  '<li><a class="dropdown-item" href="añadirUser">Añadir Usuario</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="deleteUser.php">Eliminar Usuario</a></li>';
+              echo  '<li><a class="dropdown-item" href="deleteUser">Eliminar Usuario</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="añadirPantalla.php">Añadir Pantalla</a></li>';
+              echo  '<li><a class="dropdown-item" href="añadirPantalla">Añadir Pantalla</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="deletePantalla.php">Eliminar Pantalla</a></li>';
+              echo  '<li><a class="dropdown-item" href="deletePantalla">Eliminar Pantalla</a></li>';
               
               echo '</ul>';
 
@@ -123,14 +123,38 @@ require "conection.php";
   <!----------- FIN DE CABECERA Y MENÚ ----------->
 
   <!----------- CONTENIDO DE LA PÁGINA ----------->
-  
+<?php
+            $usuario = 'root';
+            $password = 'Admin1234';
+            $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
+
+            //$id=$_GET['id'];
+            //Consulta
+
+            $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin");
+            //$consulta=$db->prepare("SELECT Descripcion FROM Publicacion WHERE ID_Publicacion='$id'");
+            $consulta->execute();
+            $data=$consulta->fetchAll();
+
+            //echo "SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin";
+            //print_r ($data);
+
+
+
+          ?>
+         
   <section>
         <div class="slideshow-container">
+        
+        
         <div class="publicacion fade">
-            <p>Publicacion</p>
-            
-            
+            <p><?php echo $data[0]["Titulo"];?></p>
+            <p><?php echo $data[0]["Descripcion"];?></p>
+            <p><?php echo $data[0]["Tipo_Publicacion"];?></p>
+            <img id="imagenPubli" src="<?php echo $data[0]["Multimedia"];?>">
+            <p><?php echo $data[0]["Nom_Usuario"];?></p>
         </div>
+
         <div class="publicacion fade">
             <p>Publicacion2</p>
             

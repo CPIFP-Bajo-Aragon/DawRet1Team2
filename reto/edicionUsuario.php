@@ -48,7 +48,7 @@ require "conection.php";
             <a class="nav-link" aria-current="page" href="pagina">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="formulario">Formulario</a>
+            <a class="nav-link" href="formulario">Nueva Publicacion</a>
           </li>
           <?php
 
@@ -130,7 +130,7 @@ $password = 'Admin1234';
 $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
     
 
-    $id=$_GET['id'];
+    $id=$_GET['ID_Usuario'];
     // $titulo=$_POST["Titulo"];
     // $descripcion=$_GET['Descripcion'];
     // $tipoPublicacion=$_POST["TipoPublicacion"];
@@ -140,7 +140,7 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 
    
 
-    $consulta= $db->prepare("SELECT * FROM Publicacion WHERE ID_Publicacion=$id");
+    $consulta= $db->prepare("SELECT * FROM Usuario WHERE ID_Usuario=$id");
     $consulta->execute();
     $data=$consulta->fetchAll();
     
@@ -151,33 +151,26 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
       <div class="flex-supremo">
         <div class="flex-container">
           <div class="contenedor">
-            <form action="editarPublicacion.php?id=" method="POST" enctype="multipart/form-data" >
+            <form action="editarUsuario.php?id=" method="POST" enctype="multipart/form-data" >
 
-              <label for="">ID: </label><br>
-              <input type="text" name="ID_Publicacion" id="ID_Publicacion" value="<?php echo $data[0]["ID_Publicacion"];?>"><br><br>
-              
-              <label for="">Titulo: </label><br>
-              <input type="text" name="Titulo" id="Titulo" value="<?php echo $data[0]["Titulo"];?>"><br><br>
-
-             
-
-              <label for="">Descripcion:</label><br>
-              <textarea name="Descripcion" id="Descripcion" cols="50" rows="5" placeholder="<?php echo $data[0]["Descripcion"];?>"></textarea><br><br>
-              <!-- <label for="">Departamento al que va dirigido:</label><br>
-              <select name="" id="Departamento">
-                        
+                <label for="">ID: </label><br>
+                <input type="text" name="ID_Usuario" id="ID_Usuario" value="<?php echo $data[0]["ID_Usuario"];?>"><br><br>
                 
+                <label for="">Nombre de Usuario: </label><br>
+                <input type="text" name="Nom_Usuario" id="Nom_Usuario" value="<?php echo $data[0]["Nom_Usuario"];?>"><br><br>
+              
+                <label for="">Nombre completo: </label><br>
+                <input type="text" name="Nombre_Completo" id="Nombre_Completo" value="<?php echo $data[0]["Nombre_Completo"];?>"><br><br>
 
-                </select><br><br> -->
-                <label for="">Tipo Publicacion: </label><br>
-                <input type="text" name="TipoPublicacion" id="TipoPublicacion" value="<?php echo $data[0]["Tipo_Publicacion"];?>"><br><br>
+                <label for="">Rol: </label>
+                <input type="date" name="Nombre_Rol" id="Nombre_Rol" value="<?php echo $data[0]["Nombre_Rol"];?>"><br><br>
 
-                <label for="">Fecha Inicial</label>
-                <input type="date" name="FechaInicial" id="FechaInicial" value="<?php echo $data[0]["Fecha_Inicio"];?>"><br><br>
-                <label for="">Fecha Final</label>
-                <input type="date" name="FechaFinal" id="FechaFinal" value="<?php echo $data[0]["Fecha_Fin"];?>"><br><br>
-                <label for="">Archivo:</label><br>
-                <input type="file" name="Multimedia" id="Multimedia" value="<?php echo $data[0]["Multimedia"];?>" accept="image/*"><br><br>
+                <label for="">Correo: </label>
+                <input type="date" name="Correo_Usuario" id="Correo_Usuario" value="<?php echo $data[0]["Correo_Usuario"];?>"><br><br>
+
+                <label for="">Contraseña: </label>
+                <input type="date" name="Pass" id="Pass" value="<?php echo $data[0]["Pass"];?>"><br><br>
+
                 <input type="submit" name="enviar" id="enviar" value="ENVIAR">
                 <input type="reset" name="reeset" id="reset" value="RESET">
 

@@ -28,7 +28,7 @@ echo "Connected successfully";
  
 $sql = "INSERT INTO Usuario(Nom_Usuario, Nombre_Completo, Pass_user, ID_Rol,ID_Departamento, Correo_Usuario) values ('$nombre', '$nombre_comp', CONCAT('*', UPPER(SHA1(UNHEX(SHA1('$pass'))))), '$rol', '$departamento', '$email')";
 if (mysqli_query($conn, $sql)) {
-      header("Location:listaUsers.php");
+      header("Location:listaUsers");
       
 } else {
       echo "Error: " . $sql . "<br>" . mysqli_error($conn);

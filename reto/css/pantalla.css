@@ -32,8 +32,8 @@
       grid-template-rows: 80px 1fr 50px;
       grid-template-columns: 15% 1fr 18%;
       grid-gap: 5px;
-    height: 100vh;
-    margin: 10px;  
+      height: 100vh;
+      margin: 10px;  
   }
   
 
@@ -75,4 +75,9 @@
 
   nav{
     grid-area: header;
+  }
+
+  .imagenPubli{
+    width: 200px;
+    height: auto;
   }

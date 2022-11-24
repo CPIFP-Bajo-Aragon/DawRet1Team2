@@ -21,7 +21,7 @@ $nombre=$_POST["nombre"];
 
 $sql = "INSERT INTO Departamento(Nombre) values ('$nombre')";
 if (mysqli_query($conn, $sql)) {
-      header("Location:listaDepartamentos.php");
+      header("Location:listaDepartamentos");
       
 } else {
       echo "Error: " . $sql . "<br>" . mysqli_error($conn);
