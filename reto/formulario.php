@@ -17,8 +17,8 @@ require "conection.php";
 
       <link rel="stylesheet" href="css/formulario.css">
 
-      <!-- ICONO DE PAGINA
-    -->
+      <!-- ICONO DE PAGINA -->
+
       <link rel="shortcut icon" href="images/logo.png">
 
       <!-- BOOTSTRAP -->
@@ -27,6 +27,7 @@ require "conection.php";
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
       <!-- TÍTULO -->
+
       <title>Nueva Publicación</title>
       
   </head>
@@ -80,7 +81,7 @@ require "conection.php";
             
               echo '</a>';
 
-            //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
+            //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE GESTIONAR O NO
 
             if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
@@ -130,57 +131,145 @@ require "conection.php";
 
               <label for="">Titulo: </label><br>
               <input type="text" name="Titulo" id="Titulo" placeholder="Titulo *" required><br><br>
-              <label for="">Descripcion:</label><br>
+              <label for="">Descripción:</label><br>
               <textarea name="Descripcion" id="Descripcion" cols="50" rows="5" placeholder="Descripción *" required></textarea><br><br>
               <label for="">Ubicacion:</label><br>
               <select name="Ubicacion" id="Departamento">
                         
                 <?php
+                  
+                  // $servername = "localhost";
+                  // $database = "Prueba2";
+                  // $username = "root";
+                  // $password = "Admin1234";
+                        
+                
+                  // $conn = mysqli_connect($servername, $username, $password, $database);
 
+                  // $sql = "SELECT * FROM Departamento";
+
+                  // $result = $conn->query($sql);
+
+                  // $busqueda= mysqli_fetch_assoc($result);
+
+                  // var_export($busqueda);
+
+                  // $ID_Departamento =  array_search("ID_Departamento", $busqueda, false);
+                  
+                  
+                  // while($row = $result->fetch_assoc()) {
+
+                  //   echo '<option>'.$row["Nombre"].'</option>';
+                    
+                  // }
+
+                  
                   $usuario = 'root';
                   $password = 'Admin1234';
-                  
                   $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 
-                  $query = $db->prepare("SELECT * FROM Departamento");
-                  $query->execute();
-                  $data = $query->fetchAll();
+                  //Preparamos la consulta y la ejecutamos guardamos su resultado en $data
+                  $sql4 = $db->prepare ("SELECT * FROM Departamento");
+                  $sql4->execute();
 
-                  foreach ($data as $valores):
+                  $data = $sql4->fetchAll();
+
+                  foreach($data as $valores):
                     echo '<option>'.$valores["Nombre"].'</option>';
                   endforeach;
-
                   ?>
 
                 </select><br><br>
 
                 <label for="">Pantallas: </label><br>
+                <div id="box">
 
+                </div>
+                
                 <?php
+                //comparar con la pagina historico.php y mirar si lo puedo solucionar
+                  $id=$valores["ID_Departamento"];
+                // $sql2 = "SELECT d.ID_Departamento, p.ID_Pantalla, p.Nombre as nom_pantalla, p.ID_Departamento 
+                //             FROM Pantalla p, Departamento d 
+                //             WHERE p.ID_Departamento = d.ID_Departamento
+                //             and p.ID_Departamento = '$ID_Departamento'";
+                
+                
+                
+                // $result2 = $conn->query($sql2);
 
-                $query = $db->prepare("SELECT Departamento.*, Pantalla.ID_Pantalla, Pantalla.Nombre, Estar.* 
-                FROM Departamento, Pantalla, Estar 
-                WHERE Departamento.ID_Departamento=Estar.ID_Departamento 
-                and Estar.ID_Pantalla = Pantalla.ID_Pantalla");
-               
-                $query->execute();
-                
-                $data2 = $query->fetchAll();
-                
-                foreach ($data2 as $valores2):
-                  echo $valores2;
-                  echo '<input type="checkbox" name="nom_pantalla" id="nom_pantalla">'.$valores2['Pantalla.Nombre'];
+                // while($row2 = $result2->fetch_assoc()) {
                   
-                endforeach;
+                //   echo '<input type="checkbox" name="Pantalla" id="Pantalla"> '.$row2["nom_pantalla"].'<br>';
+                  
+                // }
+                
+                  $usuario = 'root';
+                  $password = 'Admin1234';
+                  $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
+                  //Preparamos la consulta y la ejecutamos guardamos su resultado en $data
+                  //$id=$_GET['ID_Departamento'];
+                  $sql2 = $db->prepare ("SELECT d.ID_Departamento, p.ID_Pantalla, p.Nombre as nom_pantalla, p.ID_Departamento 
+                           FROM Pantalla p, Departamento d 
+                           WHERE p.ID_Departamento = d.ID_Departamento");
+
+                  $sql2->execute();
+
+                  $datas = $sql2->fetchAll();
+                  //print_r($data);
+                  
+                  /*foreach($datas as $valores):
+                    echo '<input type="checkbox" name="Pantalla" id="Pantalla">'.$valores["nom_pantalla"].'';
+                  endforeach;*/
+              
+
                 ?>
+
+                <script>
+                    const departamentos=<?php echo json_encode($data)?>;
+                    const pantallas=<?php echo json_encode($datas)?>;
+                    let p=document.getElementById("Departamento");
+                    p.addEventListener("change", function() {
+                      document.getElementById("box").innerHTML="";
+                      let o=departamentos.find(elemento=>elemento.Nombre ==p.value);
+                      //let a=data.find(elemento=>elemento.ID_Departamento == o.ID_Departamento);
+                      //document.getElementById("a").innerHTML=a.nom_pantalla;
+                    for (let i = 0; i < pantallas.length; i++) {
+
+                      if (pantallas[i].ID_Departamento==o.ID_Departamento) {
+                        let mostrar=pantallas[i].nom_pantalla
+                        console.log(mostrar);
+                        var myDiv = document.getElementById("box");
+
+                        var checkbox = document.createElement('input');
+                        checkbox.type = "checkbox";
+                        checkbox.name = "box";
+                        checkbox.value = "value";
+                        checkbox.id = "box";
+                                                
+                        var label = document.createElement('label');
+                                             
+                        label.htmlFor = "id";
+                        
+                        label.appendChild(document.createTextNode(''+mostrar+''));
+                        
+                        myDiv.appendChild(checkbox);
+                        myDiv.appendChild(label);
+                        
+                      }
+                      
+                    };
+                  
+                    });
+                  </script>
 
                 <br>
 
-                <label for="">Tipo Publicacion: </label><br>
+                <label for="">Tipo Publicación: </label><br>
                 <select>
-                  <option value="">Noticia</option>
-                  <option value="">Reunión</option>
-                  <option value="">Nose</option>
+                  <option  value="">Noticia</option>
+                  <option  value="">Reunión</option>
+                  <option  value="">Nose</option>
                 </select><br><br>
                 <label for="">Fecha Inicial</label>
                 <input type="date" name="FechaInicial" id="FechaInicial" class="fecha" required><br><br>

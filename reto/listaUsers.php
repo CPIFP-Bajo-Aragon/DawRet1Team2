@@ -1,8 +1,16 @@
 <?php
 
 session_start();
+if(!isset($_SESSION['id'])){
+  header("Location:index");
+  exit();
+}
+
+//print_r($_SESSION['id']);
 
 require "conection.php";
+
+
 
 ?>
 
@@ -27,15 +35,16 @@ require "conection.php";
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
       <!-- TÍTULO -->
-      <title>Gestionar Usuarios</title>
+      <title>Inicio</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
+
+    
       
   </head>
-
-  <body>
-  
-  <!----------- CABECERA Y MENÚ ----------->
-
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
       <a class="navbar-brand" href="pagina">
         <img src="images/logo.png" height="50px">
@@ -46,7 +55,7 @@ require "conection.php";
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="pagina">Inicio</a>
+            <a class="nav-link active" aria-current="pagina" href="pagina">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="formulario">Nueva Publicación</a>
@@ -70,12 +79,12 @@ require "conection.php";
           </li>
           <li class="nav-item dropdown">
 
-            <a class="nav-link dropdown-toggle active"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
+            <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
             
             
             <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
               
-            <?php 
+              <?php 
               
               echo $_SESSION["nombre"];
             
@@ -117,16 +126,8 @@ require "conection.php";
       </div>
     </div>
   </nav>
-
-  <!----------- FIN DE CABECERA Y MENÚ ----------->
-
-  <!----------- CONTENIDO DE LA PÁGINA ----------->
-
-
-<div class="pagina">
-
-          
-            <div class="buscador">
+    <div class="pagina">
+    <div class="buscador">
               <form action="buscadorUsuario" method="POST">
                 <input type="text" name="texto" id="texto">
                 <input type="submit" name="search" id="search" value="BUSCAR">
@@ -207,7 +208,7 @@ require "conection.php";
                   $query->execute();
                   $data = $query->fetchAll();
 
-                  echo '<table>';
+                  echo '<table id="GestionUsuarios">';
                   echo '<tr><th>Usuario</th><th>Nombre Completo</th><th>ROL</th><th>Correo</th><th>Departamento</th><th>Modificar</th></tr>';
                   //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
                   
@@ -230,61 +231,9 @@ require "conection.php";
                     }
                 </script>
 
-               
-
-                <?php
-
-
-                //Conexion con base de datos
-                $usuario = 'root';
-                $password = 'Admin1234';
-                $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
-                    
-
-                //$id=$_GET['ID_Usuario'];
-                //$id=$_GET['id'];
-
-                    //$consulta= $db->prepare("SELECT * FROM Usuario WHERE ID_Usuario='$id'");
-                    
-                    // $consulta = $db->prepare("SELECT ID_Usuario, Nom_Usuario, Nombre_Completo, Rol.Nombre as Nombre_Rol, Correo_Usuario,Departamento.Nombre as Nombre_Departamento FROM Usuario, Departamento, Rol WHERE Usuario.ID_Rol=Rol.ID_Rol and Usuario.ID_Departamento=Departamento.ID_Departamento;");
-                    // $consulta->execute();
-                    // $data2=$consulta->fetchAll();
-                    
-                    //print_r($data2);
-
-                ?>
-
-                <dialog id="modal2">
-                <h3>EDITAR USUARIO <button  onclick="window.modal2.close();"> X </button></h3><br>
-
-                <form action="editarUsuario.php?id=" method="POST" >
-
-                <label for="">ID: </label><br>
-                <input type="text" name="ID_Usuario" id="ID_Usuario" value="<?php echo $data2[0]["ID_Usuario"];?>"><br><br>
-                
-                <label for="">Nombre de Usuario: </label><br>
-                <input type="text" name="Nom_Usuario" id="Nom_Usuario" value="<?php echo $data2[0]["Nom_Usuario"];?>"><br><br>
-              
-                <label for="">Nombre completo: </label><br>
-                <input type="text" name="Nombre_Completo" id="Nombre_Completo" value="<?php echo $data2[0]["Nombre_Completo"];?>"><br><br>
-
-                <label for="">Correo: </label>
-                <input type="text" name="Correo_Usuario" id="Correo_Usuario" value="<?php echo $data2[0]["Correo_Usuario"];?>"><br><br>
-
-                
-
-                <input type="submit" name="enviar" id="enviar" value="ENVIAR">
-                <input type="reset" name="reeset" id="reset" value="RESET">
-
-                </form>
-
-
-                
-         
 
 
   <!----------- FIN DE CONTENIDO DE LA PÁGINA ----------->
-
   <!----------- FOOTER ----------->
 
 
@@ -298,8 +247,9 @@ require "conection.php";
 
   <!----------- FIN DEL FOOTER ----------->
 
-  </div>
-  </body>
+  </div>      
+
+</body>
 </html>
 
 
@@ -347,3 +297,4 @@ function validarFormulario() {
     }
 }
 </script>
+

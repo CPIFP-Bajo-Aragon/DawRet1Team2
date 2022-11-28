@@ -1,7 +1,10 @@
 <?php
 
 session_start();
-
+if(!isset($_SESSION['id'])){
+  header("Location:index");
+  exit();
+}
 require "conection.php";
 
 ?>
@@ -176,20 +179,8 @@ require "conection.php";
                 echo '<hr>';
                 echo '</div>';
               endforeach;
-
-              //Compreba si $data esta vacio, si esta te lleva a la pagina reloj.php
-              if (empty($data)) {
-                header("Location:reloj");
-                exit();
-              }
             }
-
-            ?>
-
-          <!--Recargas la pagina cada cierto tiempo -->
-          <script type="text/javascript">
-            setTimeout(function(){ location.reload(1);}, 15000);
-          </script>
+          ?>
 
       </div>
 

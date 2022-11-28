@@ -21,7 +21,7 @@ $nombreP=$_POST["nombre2"];
 $id=$_POST["id"];
 $ubi=$_POST["ubi"];
 
-$sql = "INSERT INTO Pantalla(Nombre,Identificador,Ubicacion) values ('$nombreP', '$id', '$ubi')";
+$sql = "INSERT INTO Pantalla(Nombre,Identificador, ID_Departamento) values ('$nombreP', '$id', '$ubi')";
 if (mysqli_query($conn, $sql)) {
       header("Location:listaPantallas");
       

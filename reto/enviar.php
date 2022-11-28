@@ -19,6 +19,7 @@ $TipoPublicacion=$_POST["TipoPublicacion"];
 $FechaInicial=$_POST["FechaInicial"];
 $FechaFinal=$_POST["FechaFinal"];
 $Ubicacion=$_POST['Ubicacion'];
+$Pantalla=$_POST['box'];
 $ID_Usuario=$_SESSION['id'];
 
 
@@ -33,9 +34,10 @@ if (!$conn) {
     exit();
 }
 
-    $consulta = "INSERT INTO Publicacion (Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Ubicacion,  Fecha_Inicio, Fecha_Fin, ID_Usuario)
-        VALUES('$Titulo','$Descripcion','".$dir.$Multimedia."', '$TipoPublicacion','Pendiente', '$Ubicacion', '$FechaInicial','$FechaFinal','$ID_Usuario' )";
+    $consulta = "INSERT INTO Publicacion (Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Ubicacion, Pantalla,  Fecha_Inicio, Fecha_Fin, ID_Usuario)
+        VALUES('$Titulo','$Descripcion','".$dir.$Multimedia."', '$TipoPublicacion','Pendiente', '$Ubicacion', '$Pantalla', '$FechaInicial','$FechaFinal','$ID_Usuario' )";
     if (mysqli_query($conn, $consulta)) {
+
     header("Location:pagina");
     
 } else {

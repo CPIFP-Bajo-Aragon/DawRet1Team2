@@ -128,12 +128,13 @@ require "conection.php";
         
    
             <div class="buscador">
-              <form action="buscador.php" method="POST">
+              <form action="buscadorHistorial.php" method="POST">
                 <input type="text" name="texto" id="texto">
                 <input type="submit" name="search" id="search" value="BUSCAR">
               </form>
             </div><br><br><br>
-    
+
+            
             <?php
             //Si se ha pulsado el botón de buscar
             if (isset($_POST['search'])) {
@@ -155,7 +156,7 @@ require "conection.php";
                                           OR Tipo_Publicacion LIKE '%".$keywords."%'
                                           OR Estado LIKE '%".$keywords."%'
                                           OR Nom_Usuario LIKE '%".$keywords."%')
-                                          ORDER BY fecha_Fin desc");
+                                          ORDER BY Fecha_Inicio desc");
                 $consulta->execute();
                 $data=$consulta->fetchAll();
 
@@ -173,7 +174,7 @@ require "conection.php";
                     echo '<h2>Resultados</h2>';
 
                     echo '<table>';
-                    echo '<tr><th>Noticia</th><th>Titulo</th><th>Tipo de Publicación</th><th>Estado</th><th>Fecha de Inicio</th><th>Fecha de fin</th><th>Publicado por</th></tr>';
+                    echo '<tr><th>Noticia</th><th>Titulo</th><th>Tipo de Publicación</th><th>Estado</th><th>Fecha de Inicio<button type="button" name="ordenard" id="ordenar" value="Ordenar por Fecha" onclick="ordenaras()"><img id="img-ord" src="img/flechas.png"></button></th><th>Fecha de fin</th><th>Publicado por</th></tr>';
                     //Recorremos con foreach y mostramos los datos
                       foreach ($data as $valores):
                         echo '<tr><td><button id="show" onclick="verinfocliente('.$valores['ID_Publicacion'].');window.modal.showModal() "> Ver Noticia</button></td><td>'. $valores['Titulo'] .'</td><td>'. $valores['Tipo_Publicacion'] .'</td><td>'. $valores['Estado'] .'</td><td>'. $valores['Fecha_Inicio'] .'</td><td>'. $valores['Fecha_Fin'] .'</td><td>'. $valores['Nom_Usuario'] .'</td></tr>';
@@ -181,20 +182,22 @@ require "conection.php";
                     echo '</table>';
                     }}
                   ?>
+           <!--codigo javascript para mostrar los datos de ver noticias -->
+          <script type="text/javascript">
+            //cogemos la id de la fila que queramos y la cual esta en el onclick
+            var id = document.querySelector("button").getAttribute("onclick");
+            //pasanos el array con todos los datos a un array javascript
+            const datos=<?php echo json_encode($data)?>;
+              function verinfocliente(id){
               
-              <script type="text/javascript">
-                var id = document.querySelector("button").getAttribute("onclick");
-                const datos=<?php echo json_encode($data)?>;
-                  function verinfocliente(id){
-                  
-                   
-                   let o=datos.find(elemento=>elemento.ID_Publicacion == id);
-                    
-                    document.getElementById('titulo').innerHTML=o.Titulo;
-                    document.getElementById('desc').innerHTML=o.Descripcion;
-                    document.getElementById('img').innerHTML='<img src="'+o.Multimedia+'">';
-                  }
-              </script>
+              //le pasamos la id y con el find vamos a buscar la id que sea igual a la que le pasamos para poder mostrar la informacion de esa noticia exacta
+              let o=datos.find(elemento=>elemento.ID_Publicacion == id);
+                //le ponemos los valores que queremos a los elementos de la ventana modal
+                document.getElementById('titulo').innerHTML=o.Titulo;
+                document.getElementById('desc').innerHTML=o.Descripcion;
+                document.getElementById('img').innerHTML='<img src="'+o.Multimedia+'">';
+              }
+          </script>
               
           
                 <dialog id="modal">
@@ -203,17 +206,6 @@ require "conection.php";
           
                     <?php
           
-          
-                    //Conexion con base de datos
-                    /*$usuario = 'root';
-                    $password = 'Admin1234';
-                    $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
-                    //Consulta
-                    $idd=$valores['ID_Publicacion'];
-                    $consulta2=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia FROM Publicacion WHERE ID_Publicacion=$idd");
-                    $consulta2->execute();
-                    $datas=$consulta2->fetchAll();
-                    foreach ($datas as $valores):*/
                     echo '<div class="contenido">';
                     echo '<div class="titulo-noticia">';
                     echo '<h3 id="titulo"></h3><br>';
@@ -221,7 +213,6 @@ require "conection.php";
                     echo '<p id="desc"><p>';
                     echo '<div class="imagen-noticia" id="img"><img id="img-bd" src=""></div>';
                     echo '</div>';
-                    //endforeach;
                     ?>
           
                       
@@ -246,3 +237,104 @@ require "conection.php";
   </div>
   </body>
 </html>
+
+<script type="text/javascript">
+    const datosTabla=<?php echo json_encode($data)?>;
+    //funcion para ordenar las publicaciones por orden de fecha de inicio 
+    function ordenaras(){
+      //cuando llamamos a la funcion le decimos a la tabla que tenemos que se ponga en display none
+      const ocul=document.getElementById("publi").style = 'display: none;';
+      //ordenamos la tabla con la funcion sort los parametros a y b nos indicaran que fecha es mayor o menor
+      const d= datosTabla.sort((a, b) => new Date(a.Fecha_Inicio).getTime() > new Date(b.Fecha_Inicio).getTime());
+      //const a= datosTabla.sort((a, b) => new Date(b.Fecha_Inicio).getTime() > new Date(a.Fecha_Inicio).getTime());
+     
+    //creamos la tabla con javascript
+    const contenedor = document.getElementById("resultado");
+ 
+    const tabla = document.createElement("table");
+ 
+    let tr = document.createElement("tr");
+      //array para poner en th y no tener que escribir tanto codigo
+    const array = [
+      {nombre: "Noticia"},
+      {nombre: "Titulo"},
+      {nombre: "Tipo de Publicacion"},
+      {nombre: "Estado"},
+      {nombre: "Fecha de Inicio"},
+      {nombre: "Fecha de Fin"},
+      {nombre: "Publicado por"},
+    ];
+    //recorremos array y le ponemos cada una a una columna
+    for (let i = 0; i < array.length; i++) {
+      let th = document.createElement("th");
+      let thText = document.createTextNode(array[i].nombre);
+      th.appendChild(thText);
+      tr.appendChild(th);
+      
+    }
+    
+    
+    
+    //recorremos el array con todos los datos y llenamos la tabla
+     d.forEach((e) => {
+
+      tabla.appendChild(tr);
+ 
+      tr = document.createElement("tr");
+      
+      td = document.createElement("td");
+      button= document.createElement("button");
+      button.innerHTML="Ver Noticia";
+      button.id="show";
+      //le damos al boton que hemos creado la funciones correspondientes
+      button.onclick=function () {
+        verinfocliente(e.ID_Publicacion);
+        window.modal.showModal();
+      };
+      //button.appendChild(Text);
+      td.appendChild(button);
+      tr.appendChild(td);
+ 
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Titulo);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+ 
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Tipo_Publicacion);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Estado);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Fecha_Inicio);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Fecha_Fin);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Nom_Usuario);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+ 
+      tabla.appendChild(tr);
+ 
+    });
+ 
+    contenedor.appendChild(tabla);
+
+      
+    }
+         
+  </script>
+
+
+

@@ -1,7 +1,10 @@
 <?php
 
 session_start();
-
+if(!isset($_SESSION['id'])){
+  header("Location:index");
+  exit();
+}
 require "conection.php";
 
 ?>
@@ -143,10 +146,10 @@ require "conection.php";
 
               echo '<h5>Nombre Usuario: </h5><p>'.$_SESSION['nombre'].'</p>';
               echo '<h5>Nombre Completo: </h5><p>'.$_SESSION['comp'].'</p>';
-              echo '<h5>ID de Usuario: </h5><p>'.$_SESSION['id'].'</p>';
+              //echo '<h5>ID de Usuario: </h5><p>'.$_SESSION['id'].'</p>';
               echo '<h5>Correo Electrónico:</h5><p>'.$_SESSION['correo'].'</p>';
-              echo '<h5>Departamento: </h5><p>'.$_SESSION['dep'].'</p>';
-              echo '<h5>Rol de Usuario:</h5><p>'.$_SESSION['nomRol'].'</p>';
+              //echo '<h5>Departamento: </h5><p>'.$_SESSION['dep'].'</p>';
+             // echo '<h5>Rol de Usuario:</h5><p>'.$_SESSION['nomRol'].'</p>';
               
 
               

@@ -1,7 +1,10 @@
 <?php
 
 session_start();
-
+if(!isset($_SESSION['id'])){
+  header("Location:index");
+  exit();
+}
 require "conection.php";
 
 ?>
@@ -172,7 +175,7 @@ require "conection.php";
                   </script>
                   
                   <label for="">Ubicación:</label><br>
-                  <select name="Ubicacion" id="Departamento">
+                  <select name="ubi" id="Departamento">
                         
                 <?php
 
@@ -181,13 +184,15 @@ require "conection.php";
                   
                   $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 
-                  $query = $db->prepare("SELECT * FROM Departamento");
+                  $query = $db->prepare("SELECT * FROM Departamento;");
                   $query->execute();
                   $data = $query->fetchAll();
-
+                  
                   foreach ($data as $valores):
-                    echo '<option >'.$valores["Nombre"].'</option>';
+                    echo '<option value="'.$valores['ID_Departamento'].'">'.$valores['Nombre'].'</option>';
                   endforeach;
+
+                 
 
                   ?>
 
@@ -206,8 +211,11 @@ require "conection.php";
                   $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
                   //Preparamos la consulta y la ejecutamos guardamos su resultado en $data
                   
-                  $query = $db->prepare("SELECT ID_Pantalla, Nombre, Identificador, Ubicacion FROM Pantalla;");
+                  $query = $db->prepare("SELECT p.ID_Pantalla as ID_Pantalla, p.Nombre as Nombre, p.Identificador as Identificador, p.ID_Departamento  as ID_Departamento, d.Nombre as NombreUbi
+                  FROM Pantalla p, Departamento d 
+                  WHERE p.ID_Departamento = d.ID_Departamento;");
                   $query->execute();
+
                   $data = $query->fetchAll();
 
                   echo '<table>';
@@ -215,7 +223,7 @@ require "conection.php";
                   //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
                   
                   foreach ($data as $valores):
-                    echo '<tr><td>'. $valores['Nombre'] .'</td><td>'. $valores['Identificador'] .'</td><td>'. $valores['Ubicacion'] .'</td><td><a href="pantallaEditar.php?id='.$valores["ID_Pantalla"].'"><img src="img/icons8-lápiz-64.png" height="32px" "></a><a onclick="confirmar(event)" href="borrarPantalla.php?id='.$valores["ID_Pantalla"].'"><img src="images/icons8-eliminar-96.png" height="32px""></a></td></tr>';
+                    echo '<tr><td>'. $valores['Nombre'] .'</td><td>'. $valores['Identificador'] .'</td><td>'. $valores['NombreUbi'] .'</td><td><a href="pantallaEditar.php?id='.$valores["ID_Pantalla"].'"><img src="img/icons8-lápiz-64.png" height="32px" "></a><a onclick="confirmar(event)" href="borrarPantalla.php?id='.$valores["ID_Pantalla"].'"><img src="images/icons8-eliminar-96.png" height="32px""></a></td></tr>';
                   endforeach;
 
                   echo '</table>';

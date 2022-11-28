@@ -33,7 +33,7 @@
                 <form action="inicioSesion" method="post">
 
                     <label for="">USUARIO:</label><br>
-                    <input type="text" name="user" id="pass"><br><br>
+                    <input type="text" name="user" id="user"><br><br>
                     <label for="">CONTRASEÑA:</label><br>
                     <input type="password" name="pass" id="pass"><br><br>
                     <input type="submit" name="send" id="send" value="CONFIRMAR">

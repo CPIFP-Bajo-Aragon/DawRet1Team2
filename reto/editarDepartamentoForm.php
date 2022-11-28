@@ -141,7 +141,7 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
       <div class="flex-supremo">
         <div class="flex-container">
             <div class="contenedor">
-            <a href="listaUsers"><img src="img/atras.png" height="32px" ></a><h3>EDITAR UBICACIÓN </h3><br>
+            <div class="atras"><div class="item1"><h3>EDITAR UBICACION </h3></div><div class="item2"><a href="listaUsers"><img src="img/atras.png" height="32px" ></a></div></div><br>
             
                 <form action="editarDepartamento.php?id=" method="POST">
 

@@ -1,7 +1,10 @@
 <?php
 
 session_start();
-
+if(!isset($_SESSION['id'])){
+  header("Location:index");
+  exit();
+}
 require "conection.php";
 
 ?>
@@ -27,98 +30,26 @@ require "conection.php";
 
       <!-- TÍTULO -->
       <title>Carrousel</title>
-      
+
+      <!-- Montserrat -->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&display=swap" rel="stylesheet"> 
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,400;0,900;1,900&display=swap" rel="stylesheet"> 
+        
   </head>
 
   <body>
   
   <!----------- CABECERA Y MENÚ ----------->
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-      <a class="navbar-brand" href="pagina">
-        <img src="images/logo.png" height="50px">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="pagina">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="formulario">Formulario</a>
-          </li>
-          <?php
-
-          if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
-
-          
-
-          }else{
-            echo '<li class="nav-item">';
-            echo '<a class="nav-link" href="historico">Historico</a>';
-            echo '</li>';
-
-          }
-
-          ?>
-          <li class="nav-item">
-            <a class="nav-link" href="departamentos">Departamentos</a>
-          </li>
-          <li class="nav-item dropdown">
-
-            <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
-            
-            
-            <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
-              
-              <?php 
-              
-              echo $_SESSION["nombre"];
-            
-              echo '</a>';
-
-            //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
-
-            if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
-
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo '</ul>';
-
-            } else {
+  <header>
+    <img id="cabecera" src="images/logo.png">
     
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo  '<li>';
-              echo  '<hr class="dropdown-divider">';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicación</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="añadirUser">Añadir Usuario</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="deleteUser">Eliminar Usuario</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="añadirPantalla">Añadir Pantalla</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="deletePantalla">Eliminar Pantalla</a></li>';
-              
-              echo '</ul>';
-
-            }
-
-            ?>
-
-
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  </header>
 
   <!----------- FIN DE CABECERA Y MENÚ ----------->
 
@@ -143,52 +74,61 @@ require "conection.php";
 
           ?>
          
-  <section>
+  <section>  
+      
         <div class="slideshow-container">
-        
-        
-        <div class="publicacion fade">
-            <p><?php echo $data[0]["Titulo"];?></p>
-            <p><?php echo $data[0]["Descripcion"];?></p>
-            <p><?php echo $data[0]["Tipo_Publicacion"];?></p>
-            <img id="imagenPubli" src="<?php echo $data[0]["Multimedia"];?>">
-            <p><?php echo $data[0]["Nom_Usuario"];?></p>
+          <?php
+          foreach ($data as $valores):
+            echo '<div class="publicacion fade">';
+              echo '<div class="imagen"><img src="'. $valores["Multimedia"] .'" ;></div><br>';
+                echo '<h2>'.$valores["Titulo"].'</h2>';
+                echo '<div class="descripcion">';
+                echo '<div class="user"><p>'.$valores["Nom_Usuario"].'</p></div>';
+                
+                echo '<div><p>'.$valores["Descripcion"].'</p></div>';
+                
+                echo '</div>';
+                
+            echo '</div>';
+            
+          endforeach;
+          
+          ?>
         </div>
 
-        <div class="publicacion fade">
-            <p>Publicacion2</p>
-            
-            
-        </div>
+      <div style="text-align:center">
+        <!-- <span class="dot"></span> -->
+          <?php
+          foreach ($data as $valores):
+            echo '<span class="dot"></span>';
+          endforeach;
+          ?>
+      </div>
+</section>
 
-        <div class="publicacion fade">
-            <p>Publicacion3</p>
-            
-            
-        </div>
-
-        
-        </div>
-        <div style="text-align:center">
-            <span class="dot"></span> 
-            <span class="dot"></span> 
-            <span class="dot"></span> 
-        </div>
-    </section>
+  <?php
+  if (empty($data)) {
+    header("Location:reloj");
+    exit();
+  }
+  ?>
 
   <script>
-        let slideIndex = 0;
+
+        let slideIndex = 0;//Contador de publicaciones
         showSlides();
         
         function showSlides() {
           let i;
           let slides = document.getElementsByClassName("publicacion");
           let dots = document.getElementsByClassName("dot");
+          //Bucle que recorre todas las publicaciones que hay
           for (i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";  
           }
-          slideIndex++;
-          if (slideIndex > slides.length) {slideIndex = 1}    
+          slideIndex++;//Suma uno al contador
+          if (slideIndex > slides.length) {slideIndex = 1}//Si ya no hay mas publicaciones, vuelve a la primera    
+          //Bucle del circulo que esta activo
           for (i = 0; i < dots.length; i++) {
             dots[i].className = dots[i].className.replace(" active", "");
           }
@@ -204,16 +144,20 @@ require "conection.php";
   <!----------- FOOTER ----------->
 
 
-  <div class="pie-de-pagina">
+  
     <footer>
     © Copyright 2022:  
     <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
     INFOJOVE
     </footer>
-  </div>
+  
 
   <!----------- FIN DEL FOOTER ----------->
 
   </div>
   </body>
 </html>
+<!--Recargas la pagina cada cierto tiempo -->
+<script type="text/javascript">
+        setTimeout(function(){ location.reload(1);}, 80000);
+</script>

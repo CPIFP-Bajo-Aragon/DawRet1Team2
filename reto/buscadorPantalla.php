@@ -151,11 +151,12 @@ require "conection.php";
                 
 
 
-                $consulta = $db->prepare("SELECT ID_Pantalla, Nombre, Identificador, Ubicacion 
-                                          FROM Pantalla
-                                          WHERE (Nombre LIKE '%".$keywords."%'
-                                          OR Identificador LIKE '%".$keywords."%'
-                                          OR Ubicacion LIKE '%".$keywords."%')");
+                $consulta = $db->prepare("SELECT p.ID_Pantalla, p.Nombre as Nombre, p.Identificador as Identificador, p.ID_Departamento, d.ID_Departamento, d.Nombre as NombreUbi 
+                                          FROM Pantalla p, Departamento d
+                                          WHERE p.ID_Departamento = d.ID_Departamento 
+                                          and (p.Nombre LIKE '%".$keywords."%'
+                                          OR p.Identificador LIKE '%".$keywords."%'
+                                          OR d.Nombre LIKE '%".$keywords."%')");
                 $consulta->execute();
                 $data=$consulta->fetchAll();
 
@@ -177,7 +178,7 @@ require "conection.php";
                   //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
                   
                   foreach ($data as $valores):
-                    echo '<tr><td>'. $valores['Nombre'] .'</td><td>'. $valores['Identificador'] .'</td><td>'. $valores['Ubicacion'] .'</td><td><a href="pantallaEditar.php?id='.$valores["ID_Pantalla"].'"><img src="img/icons8-lápiz-64.png" height="32px" "></a><a onclick="confirmar(event)" href="borrarPantalla.php?id='.$valores["ID_Pantalla"].'"><img src="images/icons8-eliminar-96.png" height="32px""></a></td></tr>';
+                    echo '<tr><td>'. $valores['Nombre'] .'</td><td>'. $valores['Identificador'] .'</td><td>'. $valores['NombreUbi'] .'</td><td><a href="pantallaEditar.php?id='.$valores["ID_Pantalla"].'"><img src="img/icons8-lápiz-64.png" height="32px" "></a><a onclick="confirmar(event)" href="borrarPantalla.php?id='.$valores["ID_Pantalla"].'"><img src="images/icons8-eliminar-96.png" height="32px""></a></td></tr>';
                   endforeach;
 
                   echo '</table>';
@@ -219,7 +220,7 @@ require "conection.php";
                   </script>
                   
                   <label for="">Ubicación:</label><br>
-                  <select name="Ubicacion" id="Departamento">
+                  <select name="ubi" id="Departamento">
                         
                 <?php
 
@@ -233,7 +234,7 @@ require "conection.php";
                   $data = $query->fetchAll();
 
                   foreach ($data as $valores):
-                    echo '<option >'.$valores["Nombre"].'</option>';
+                    echo '<option value="'.$valores['ID_Departamento'].'">'.$valores['Nombre'].'</option>';
                   endforeach;
 
                   ?>

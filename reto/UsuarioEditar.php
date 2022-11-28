@@ -1,39 +1,50 @@
 <?php
 
 session_start();
+if(!isset($_SESSION['id'])){
+  header("Location:index");
+  exit();
+}
+
+//print_r($_SESSION['id']);
 
 require "conection.php";
 
+
+
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Usuario</title>
+<html lang="es">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS -->
+      <!-- CSS -->
 
-    <link rel="stylesheet" href="css/estilos.css">
-    <link rel="stylesheet" href="css/formulario.css">
+      <link rel="stylesheet" href="css/estilos.css">
+      <link rel="stylesheet" href="css/formulario.css">
 
-    <!-- ICONO DE PAGINA
-    -->
-    <link rel="shortcut icon" href="images/logo.png">
+      <!-- ICONO DE PAGINA -->
+      <link rel="shortcut icon" href="images/logo.png">
 
-    <!-- BOOTSTRAP -->
+      <!-- BOOTSTRAP -->
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- TÍTULO -->
-    <title>Editar Usuario</title>
-</head>
+      <!-- TÍTULO -->
+      <title>Inicio</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
+
+    
+      
+  </head>
 <body>
- <!----------- CABECERA Y MENÚ ----------->
-
- <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
       <a class="navbar-brand" href="pagina">
         <img src="images/logo.png" height="50px">
@@ -44,7 +55,7 @@ require "conection.php";
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="pagina">Inicio</a>
+            <a class="nav-link active" aria-current="pagina" href="pagina">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="formulario">Nueva Publicación</a>
@@ -64,16 +75,16 @@ require "conection.php";
 
           ?>
           <li class="nav-item">
-            <a class="nav-link" href="departamentos">Departamentos</a>
+            <a class="nav-link" href="departamentos">Ubicaciones</a>
           </li>
           <li class="nav-item dropdown">
 
-            <a class="nav-link dropdown-toggle active"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
+            <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
             
             
             <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
               
-            <?php 
+              <?php 
               
               echo $_SESSION["nombre"];
             
@@ -115,10 +126,8 @@ require "conection.php";
       </div>
     </div>
   </nav>
-
-<!----------- FIN DE CABECERA Y MENÚ ----------->
-
-<!----------- CONTENIDO DE LA PÁGINA ----------->
+    <div class="pagina">
+        <!----------- CONTENIDO DE LA PÁGINA ----------->
 
 <?php
 $usuario = 'root';
@@ -141,12 +150,12 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
       <div class="flex-supremo">
         <div class="flex-container">
             <div class="contenedor">
-            <a href="listaUsers"><img src="img/atras.png" height="32px" ></a><h3>EDITAR USUARIO </h3><br>
-            
+            <div class="atras"><div class="item1"><h3>EDITAR USUARIO </h3></div><div class="item2"><a href="listaUsers"><img src="img/atras.png" height="32px" ></a></div></div><br>
+            <!-- formulario para editar los usuarios. El php que aparece en cada input es para seleccionar el valor que tiene cada campo -->
                 <form action="editarUsuario.php?id=" method="POST">
 
-                <!-- <label for="">ID: </label><br> -->
-                <input type="hidden" name="ID_Usuario" id="ID_Usuario" autofocus="autofocus" value="<?php echo $data2[0]["ID_Usuario"];?>">
+                
+                <input type="hidden" name="ID_Usuario" id="ID_Usuario" value="<?php echo $data2[0]["ID_Usuario"];?>">
 
                 <label for="">Nombre de Usuario: </label><br>
                 <input type="text" name="Nom_Usuario" id="Nom_Usuario" value="<?php echo $data2[0]["Nom_Usuario"];?>"><br><br>
@@ -166,5 +175,19 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
     </div>
 </div>
 
+        
+    <div class="pie-de-pagina">
+      <footer>
+      © Copyright 2022:  
+      <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
+      INFOJOVE
+      </footer>
+    </div>    
+
+
+
+    </div>        
+
 </body>
 </html>
+

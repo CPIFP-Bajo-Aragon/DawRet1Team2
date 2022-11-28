@@ -139,7 +139,7 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
     <div class="flex-supremo">
         <div class="flex-container">
             <div class="contenedor">
-            <h3><a href="listaPantallas"><img src="img/atras.png" height="32px" ></a>EDITAR PANTALLA </h3><br>
+            <div class="atras"><div class="item1"><h3>EDITAR PANTALLA </h3></div><div class="item2"><a href="listaUsers"><img src="img/atras.png" height="32px" ></a></div></div><br>
             
             
                 <form action="editarPantalla.php?id=" method="POST">

@@ -45,6 +45,7 @@
                     $_SESSION['id']=$fila->ID_Usuario;
                     $_SESSION['rol']=$fila->ID_Rol;
                     $_SESSION['nombre']=$fila->Nom_Usuario;
+                    print_r($_SESSION['id']);
                     header("Location:pagina");
                     
                     

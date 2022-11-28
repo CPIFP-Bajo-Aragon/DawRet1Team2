@@ -1,10 +1,10 @@
 # ----------------------------------------------------------------------
 # Habilitar modulo mod_rewrite
 # ----------------------------------------------------------------------
+
 <IfModule mod_rewrite.c>
   Options +FollowSymlinks
   RewriteEngine On
-  RewriteRule ^editarDepartamentoForm([0-9]+)/([a-zA-Z-]+)$ editarDepartamentoForm.php?id=$1
 </IfModule>
 
 RewriteBase /
@@ -42,6 +42,7 @@ RewriteRule ^editarUsuario$ editarUsuario.php [L,NC]
 RewriteRule ^editarAdministrador$ editarAdministrador.php [L,NC]
 RewriteRule ^carrousel$ carrousel.php [L,NC]
 RewriteRule ^enviar$ enviar.php [L,NC]
+RewriteRule ^buscadorHistorial$ buscadorHistorial.php [L,NC]
 
 # ----------------------------------------------------------------------
 # Paginas de error

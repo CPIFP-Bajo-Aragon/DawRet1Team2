@@ -23,4 +23,4 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 
   
 
-?> 
+?>    

@@ -8,6 +8,6 @@ session_destroy();
 
 echo "Cerrando sesion...";
 
-header("refresh:1;url=index.php");
+header("refresh:1;url=index");
 
 ?>

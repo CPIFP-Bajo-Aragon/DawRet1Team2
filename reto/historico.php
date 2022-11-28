@@ -1,7 +1,10 @@
 <?php
 
 session_start();
-
+if(!isset($_SESSION['id'])){
+  header("Location:index");
+  exit();
+}
 require "conection.php";
 
 ?>
@@ -126,20 +129,16 @@ require "conection.php";
 
     <!-- BUSCADOR  -->
 
-           <!-- <div class="buscador">
-              <form action="buscadorHistorial.php" method="POST">
+           <div class="buscador">
+              <form action="buscadorHistorial" method="POST">
                 <input type="text" name="texto" id="texto">
                 <input type="submit" name="search" id="search" Value="BUSCAR">
               </form>
-            </div><br><br> -->
+            </div><br><br>
 
        
 
     <!-- FIN BUSCADOR -->
-
-        <div class="ordenar">
-          <input type="button" name="ordenar" id="ordenar" value="Ordenar por Fecha" onclick="ordenar()" >
-        </div><br><br>
 
         
 
@@ -154,7 +153,7 @@ require "conection.php";
           $data=$consulta->fetchAll();
        
           echo '<table id="publi">';
-          echo '<tr><th>Noticia</th><th>Titulo</th><th>Tipo de Publicación</th><th>Estado</th><th>Fecha de Inicio</th><th>Fecha de fin</th><th>Publicado por</th></tr>';
+          echo '<tr><th>Noticia</th><th>Titulo</th><th>Tipo de Publicación</th><th>Estado</th><th>Fecha de Inicio<button type="button" name="ordenard" id="ordenar" value="Ordenar por Fecha" onclick="ordenaras()"><img id="img-ord" src="img/flechas.png"></button></th><th>Fecha de fin</th><th>Publicado por</th></tr>';
           //Recorremos con foreach y mostramos los datos
             foreach ($data as $valores):
               echo '<tr><td><button id="show" onclick="verinfocliente('.$valores['ID_Publicacion'].');window.modal.showModal() "> Ver Noticia</button></td><td>'. $valores['Titulo'] .'</td><td>'. $valores['Tipo_Publicacion'] .'</td><td>'. $valores['Estado'] .'</td><td>'. $valores['Fecha_Inicio'] .'</td><td>'. $valores['Fecha_Fin'] .'</td><td>'. $valores['Nom_Usuario'] .'</td></tr>';
@@ -187,16 +186,6 @@ require "conection.php";
           <?php
 
 
-          //Conexion con base de datos
-          /*$usuario = 'root';
-          $password = 'Admin1234';
-          $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
-          //Consulta
-          $idd=$valores['ID_Publicacion'];
-          $consulta2=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia FROM Publicacion WHERE ID_Publicacion=$idd");
-          $consulta2->execute();
-          $datas=$consulta2->fetchAll();
-          foreach ($datas as $valores):*/
           echo '<div class="contenido">';
           echo '<div class="titulo-noticia">';
           echo '<h3 id="titulo"></h3><br>';
@@ -204,7 +193,7 @@ require "conection.php";
           echo '<p id="desc"><p>';
           echo '<div class="imagen-noticia" id="img"><img id="img-bd" src=""></div>';
           echo '</div>';
-          //endforeach;
+          
           ?>
 
             
@@ -234,12 +223,13 @@ require "conection.php";
   <script type="text/javascript">
     const datosTabla=<?php echo json_encode($data)?>;
     //funcion para ordenar las publicaciones por orden de fecha de inicio 
-    function ordenar(){
+    function ordenaras(){
       //cuando llamamos a la funcion le decimos a la tabla que tenemos que se ponga en display none
       const ocul=document.getElementById("publi").style = 'display: none;';
       //ordenamos la tabla con la funcion sort los parametros a y b nos indicaran que fecha es mayor o menor
       const d= datosTabla.sort((a, b) => new Date(a.Fecha_Inicio).getTime() > new Date(b.Fecha_Inicio).getTime());
-      
+      //const a= datosTabla.sort((a, b) => new Date(b.Fecha_Inicio).getTime() > new Date(a.Fecha_Inicio).getTime());
+     
     //creamos la tabla con javascript
     const contenedor = document.getElementById("resultado");
  
@@ -264,9 +254,11 @@ require "conection.php";
       tr.appendChild(th);
       
     }
-
+    
+    
+    
     //recorremos el array con todos los datos y llenamos la tabla
-    d.forEach((e) => {
+     d.forEach((e) => {
 
       tabla.appendChild(tr);
  
@@ -325,3 +317,4 @@ require "conection.php";
     }
          
   </script>
+

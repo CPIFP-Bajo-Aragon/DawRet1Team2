@@ -2,7 +2,7 @@ html, body{
     background-color: whitesmoke;
     margin:0;
     padding:0;
-    height: 150%;
+    height: 100%;
 }
 
 
@@ -97,6 +97,8 @@ h2::after{
     margin-bottom: 0px;
 }
 
+
+
 .pagina {
     padding: 50px;
     position: relative;
@@ -157,9 +159,20 @@ tbody tr:last-of-type {
 .titulo-noticia:last-child{
     text-align: right;
 }
-
+.subtitulo{
+    width: 100%;
+    
+}
 #expira{
+    width: 10%;
     color: grey;
+    float: right;
+}
+
+#usuario{
+    width: 90%;
+    color:grey;
+    float: left;
 }
 
 .imagen-noticia{
@@ -307,10 +320,34 @@ dialog button{
     border: 2px solid #e59285;
 }
 
+#ordenar{
+    border: 0px;
+    background: transparent;
+    color:#ffffff;
+
+}
+
+
+#img-ord{
+    width: 32px;
+}
+
+.atras{
+    display: flex;
+    flex-direction: row;
+}
+
+.item1{
+    width: 100%;
+}
+
+.item2{
+    padding: 0 15px;
+}
 
 
 
-@media (max-width: 1000px) {
+@media (max-width: 660px) {
 
   
 
@@ -320,6 +357,80 @@ dialog button{
         grid-template-columns: 15% 60% 25%;
     }
 
+    #modal{
+        width: 100%;
+        padding: 5%;
+        width:480px;
+        float: left;
+        left: 0;
+        position:absolute;
+    }
+
+    #GestionUsuarios{
+        left:0;
+        width: 480px;
+        padding: 0%;
+        float: left;
+    }
+
+    #GestionUsuarios td{
+        font-size: 8px;
+    }
+
+    #GestionUsuarios th{
+        font-size: 9px;
+    }
+
+    #publi{
+        left:0;
+        width: 480px;
+        padding: 0%;
+        float: left;
+        padding: 0%;
+    }
+
+    #publi td{
+        font-size: 8px;
+    }
+
+    #publi th{
+        font-size: 9px;
+    }
+
+   
+
+    table{
+        left:0;
+        width: 100%;
+        padding: 0%;
+        /* float: left; */
+    }
+
+    table td{
+        font-size: 10px;
+    }
+
+    table th{
+        font-size: 10px;
+    }
+
+    th, td{
+        padding:20px 10px;
+    
+    }
+
+    .pie-de-pagina{
+        position:absolute;
+    }
+
+    #img-ord{
+        width: 12px;
+    }
+
+    td:last-child{
+        float: none;
+        margin-right: 40px;
+    }
 
 }
 

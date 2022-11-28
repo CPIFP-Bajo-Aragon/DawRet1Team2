@@ -17,6 +17,6 @@ require "conection.php";
     <title>Error</title>
 </head>
 <body>
-    <img src="images/error.png">
+    <img src="images/error.png"  >
 </body>
 </html>
