@@ -14,9 +14,8 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 
 
     $id=$_GET['id'];
-    //print_r($id);
+    // eliminamos la Ubicacion
     $query= $db->prepare("DELETE FROM Departamento WHERE ID_Departamento='$id'");
-    //print_r ($query);
     $query->execute();
     
     header("Location:listaDepartamentos");

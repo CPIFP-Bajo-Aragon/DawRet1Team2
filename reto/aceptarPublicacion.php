@@ -14,9 +14,9 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 //Preparamos la consulta y la ejecutamos guardamos su resultado en $data
 
     $id=$_GET['id'];
-    //print_r($id);
+    // aceptamos la publicacion cambiando el atributo estado a aceptada
     $consulta= $db->prepare("UPDATE Publicacion SET Estado='Aceptada' WHERE ID_Publicacion='$id'");
-    //print_r ($consulta);
+
     $consulta->execute();
     
     header("Location:gestionarPubli");

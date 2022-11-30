@@ -53,63 +53,79 @@ require "conection.php";
           </li>
           <?php
 
-          if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
           
 
-          }else{
-            echo '<li class="nav-item">';
-            echo '<a class="nav-link" href="historico">Historico</a>';
-            echo '</li>';
+}else{
+  echo '<li class="nav-item">';
+  echo '<a class="nav-link" href="historico">Historico</a>';
+  echo '</li>';
 
-          }
 
-          ?>
-          <li class="nav-item">
-            <a class="nav-link" href="departamentos">Ubicaciones</a>
-          </li>
-          <li class="nav-item dropdown">
+  echo '<li class="nav-item">';
+  echo  '<a class="nav-link" href="departamentos">Ubicaciones</a>';
+  echo '</li>';
 
-            <a class="nav-link dropdown-toggle active"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
-            
-            
-            <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
-              
-            <?php 
-              
-              echo $_SESSION["nombre"];
-            
-              echo '</a>';
+}
 
-            //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
+?>
+  <li class="nav-item dropdown">
 
-            if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+  <a class="nav-link dropdown-toggle active"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
 
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo '</ul>';
 
-            } else {
+  
+  
+  
+  <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
     
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo  '<li>';
-              echo  '<hr class="dropdown-divider">';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
-              echo '</ul>';
+    <?php 
+    
+    echo $_SESSION["nombre"];
+  
+    echo '</a>';
 
-            }
+  //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
 
-            ?>
+  if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo '</ul>';
+    
+
+  } else if (isset($_SESSION["rol"]) && $_SESSION["rol"]==2){
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    
+
+  } else {
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Ubicaciones</a></li>';
+    echo '</ul>';
+  }
+
+  ?>
 
 
           </li>
@@ -151,7 +167,7 @@ require "conection.php";
                 $password = 'Admin1234';
                 $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
                 
-
+              // consulta que busca en funcion de lo que hayas introducido en el buscador
 
                 $consulta=$db->prepare("SELECT ID_Usuario, Nom_Usuario, Nombre_Completo, Rol.Nombre as Nombre_Rol, Correo_Usuario, Departamento.Nombre as Nombre_Departamento
                                           FROM Usuario, Departamento, Rol
@@ -178,15 +194,15 @@ require "conection.php";
                     //Si no hay registros encontrados
                     echo '<h2>Resultados</h2>';
 
-                    echo '<table>';
+                    echo '<div class="tabla-gestion"><table>';
                     echo '<tr><th>Usuario</th><th>Nombre Completo</th><th>ROL</th><th>Correo</th><th>Departamento</th><th>Eliminar</th></tr>';
                     //Recorremos $data con el foreach y mostramos los valores[nombre de la tabla]
                     
                     foreach ($data as $valores):
-                      echo '<tr><td>'. $valores['Nom_Usuario'] .'</td><td>'. $valores['Nombre_Completo'] .'</td><td>'. $valores['Nombre_Rol'] .'</td><td>'. $valores['Correo_Usuario'] .'</td><td>'. $valores['Nombre_Departamento'] .'</td><td><a href="UsuarioEditar.php?id='.$valores["ID_Usuario"].'"><img src="img/icons8-lápiz-64.png" height="32px" "></a><a onclick="confirmar(event)" href="borrarUsuario.php?id='.$valores["ID_Usuario"].'"><img src="images/icons8-eliminar-96.png" height="32px" "></a></td></tr>';
+                      echo '<tr><td>'. $valores['Nom_Usuario'] .'</td><td>'. $valores['Nombre_Completo'] .'</td><td>'. $valores['Nombre_Rol'] .'</td><td>'. $valores['Correo_Usuario'] .'</td><td>'. $valores['Nombre_Departamento'] .'</td><td><a href="UsuarioEditar.php?id='.$valores["ID_Usuario"].'"><img src="img/icons8-lápiz-64.png" class="gest-icons"></a><a onclick="confirmar(event)" href="borrarUsuario.php?id='.$valores["ID_Usuario"].'"><img src="images/icons8-eliminar-96.png" class="gest-icons"></a></td></tr>';
                     endforeach;
   
-                    echo '</table>';
+                    echo '</table></div>';
                 }
             }
             ?>

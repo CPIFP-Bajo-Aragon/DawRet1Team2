@@ -30,6 +30,9 @@
         
             <div  class="contenedor">
             <h2>INICIAR SESIÓN</h2><br><br>
+
+            <!-- formulario de inicio de sesion -->
+            
                 <form action="inicioSesion" method="post">
 
                     <label for="">USUARIO:</label><br>

@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
 
@@ -53,21 +53,21 @@
                 elseif ($nfilas==0) :
                     
                     ?>
+                    <!-- mensaje que se mostrara si no has introducido un usuario o contraseña correctos -->
                     
-                    <p>
-                    Nombre de usuario y/o contraseña incorrecto. Será redireccionado en 3 segundos.
-                    </p>
-                    <p>
-                        Si no es redireccionado automáticamente, haga click <a href="index.php">aquí</a>.
-                    </p>
-                    
+                    <div style="text-align:center">
+                    <p>Nombre de usuario y/o contraseña incorrecto. Será redireccionado en 3 segundos.</p>
+                    <p>Si no es redireccionado automáticamente, haga click <a href="index.php">aquí</a>.</p>
+                    <div>
                     </main>
                     <?php
                         header("refresh:4;url=index");
                 else : 
                     ?>
+                    <div style="text-align:center">
                         <p>Ha ocurrido un error fatal, contacte con el root.</p>
                         <p>Redirigiendo en 3 segundos.</p>
+                    </div>
                     <?php
                     header("refresh:4;url=index");
                 endif;

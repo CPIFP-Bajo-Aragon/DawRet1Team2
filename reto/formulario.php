@@ -1,6 +1,10 @@
 <?php
 
 session_start();
+if(!isset($_SESSION['id'])){
+  header("Location:index");
+  exit();
+}
 
 require "conection.php";
 
@@ -53,63 +57,79 @@ require "conection.php";
           </li>
           <?php
 
-          if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
           
 
-          }else{
-            echo '<li class="nav-item">';
-            echo '<a class="nav-link" href="historico">Historico</a>';
-            echo '</li>';
+}else{
+  echo '<li class="nav-item">';
+  echo '<a class="nav-link" href="historico">Historico</a>';
+  echo '</li>';
 
-          }
 
-          ?>
-          <li class="nav-item">
-            <a class="nav-link" href="departamentos">Ubicaciones</a>
-          </li>
-          <li class="nav-item dropdown">
+  echo '<li class="nav-item">';
+  echo  '<a class="nav-link" href="departamentos">Ubicaciones</a>';
+  echo '</li>';
 
-            <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
-            
-            
-            <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
-              
-            <?php 
-              
-              echo $_SESSION["nombre"];
-            
-              echo '</a>';
+}
 
-            //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE GESTIONAR O NO
+?>
+  <li class="nav-item dropdown">
 
-            if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+  <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
 
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo '</ul>';
 
-            } else {
+  
+  
+  
+  <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
     
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo  '<li>';
-              echo  '<hr class="dropdown-divider">';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
-              echo '</ul>';
+    <?php 
+    
+    echo $_SESSION["nombre"];
+  
+    echo '</a>';
 
-            }
+  //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
 
-            ?>
+  if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo '</ul>';
+    
+
+  } else if (isset($_SESSION["rol"]) && $_SESSION["rol"]==2){
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    
+
+  } else {
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Ubicaciones</a></li>';
+    echo '</ul>';
+  }
+
+  ?>
 
 
           </li>
@@ -128,7 +148,7 @@ require "conection.php";
           <div class="contenedor">
             <h3>NUEVA PUBLICACIÓN</h3><br>
             <form action="enviar" method="post" enctype="multipart/form-data" name="formulario" onsubmit="return validarFormulario()">
-
+              
               <label for="">Titulo: </label><br>
               <input type="text" name="Titulo" id="Titulo" placeholder="Titulo *" required><br><br>
               <label for="">Descripción:</label><br>
@@ -137,33 +157,7 @@ require "conection.php";
               <select name="Ubicacion" id="Departamento">
                         
                 <?php
-                  
-                  // $servername = "localhost";
-                  // $database = "Prueba2";
-                  // $username = "root";
-                  // $password = "Admin1234";
-                        
-                
-                  // $conn = mysqli_connect($servername, $username, $password, $database);
 
-                  // $sql = "SELECT * FROM Departamento";
-
-                  // $result = $conn->query($sql);
-
-                  // $busqueda= mysqli_fetch_assoc($result);
-
-                  // var_export($busqueda);
-
-                  // $ID_Departamento =  array_search("ID_Departamento", $busqueda, false);
-                  
-                  
-                  // while($row = $result->fetch_assoc()) {
-
-                  //   echo '<option>'.$row["Nombre"].'</option>';
-                    
-                  // }
-
-                  
                   $usuario = 'root';
                   $password = 'Admin1234';
                   $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
@@ -173,7 +167,7 @@ require "conection.php";
                   $sql4->execute();
 
                   $data = $sql4->fetchAll();
-
+                  echo '<option></option>';
                   foreach($data as $valores):
                     echo '<option>'.$valores["Nombre"].'</option>';
                   endforeach;
@@ -183,26 +177,12 @@ require "conection.php";
 
                 <label for="">Pantallas: </label><br>
                 <div id="box">
-
+                  
                 </div>
                 
                 <?php
                 //comparar con la pagina historico.php y mirar si lo puedo solucionar
                   $id=$valores["ID_Departamento"];
-                // $sql2 = "SELECT d.ID_Departamento, p.ID_Pantalla, p.Nombre as nom_pantalla, p.ID_Departamento 
-                //             FROM Pantalla p, Departamento d 
-                //             WHERE p.ID_Departamento = d.ID_Departamento
-                //             and p.ID_Departamento = '$ID_Departamento'";
-                
-                
-                
-                // $result2 = $conn->query($sql2);
-
-                // while($row2 = $result2->fetch_assoc()) {
-                  
-                //   echo '<input type="checkbox" name="Pantalla" id="Pantalla"> '.$row2["nom_pantalla"].'<br>';
-                  
-                // }
                 
                   $usuario = 'root';
                   $password = 'Admin1234';
@@ -216,37 +196,40 @@ require "conection.php";
                   $sql2->execute();
 
                   $datas = $sql2->fetchAll();
-                  //print_r($data);
-                  
-                  /*foreach($datas as $valores):
-                    echo '<input type="checkbox" name="Pantalla" id="Pantalla">'.$valores["nom_pantalla"].'';
-                  endforeach;*/
-              
-
+               
                 ?>
 
                 <script>
+                    //pasamos los dos arrays que tenemos 
                     const departamentos=<?php echo json_encode($data)?>;
                     const pantallas=<?php echo json_encode($datas)?>;
+                    //declaramos p y le decimos que tome el valor que hay en id="Departamento"
                     let p=document.getElementById("Departamento");
+                    //con el addEventListener le decimos que cambie el valor cuando selecciones en el select de departamentos
                     p.addEventListener("change", function() {
+                      //vaciamos los checkbox cada vez que cambiemos de departamento en el select
                       document.getElementById("box").innerHTML="";
+                      //guardamos en o el objeto que correponda a al valor de p
                       let o=departamentos.find(elemento=>elemento.Nombre ==p.value);
-                      //let a=data.find(elemento=>elemento.ID_Departamento == o.ID_Departamento);
-                      //document.getElementById("a").innerHTML=a.nom_pantalla;
+                      //recorremos el array de pantallas
+                      let cont=0;
                     for (let i = 0; i < pantallas.length; i++) {
-
+                      
+                      //si el id_departemento de pantallas es igual al de o, creamos los checkbox con los valores correspondientes a las pantallas que tenga ese departemento
                       if (pantallas[i].ID_Departamento==o.ID_Departamento) {
-                        let mostrar=pantallas[i].nom_pantalla
-                        console.log(mostrar);
+                        let mostrar=pantallas[i].nom_pantalla;
+                        let check = [];
+                        //console.log(pantallas[i].ID_Pantalla);
                         var myDiv = document.getElementById("box");
 
                         var checkbox = document.createElement('input');
                         checkbox.type = "checkbox";
-                        checkbox.name = "box";
-                        checkbox.value = "value";
-                        checkbox.id = "box";
-                                                
+                        // checkbox.name = "box"+cont;
+                        checkbox.name = "box[]";
+                        checkbox.value = pantallas[i].ID_Pantalla;
+                        checkbox.id = "box"+cont;
+                        checkbox.class= "checkEdit";
+                                               
                         var label = document.createElement('label');
                                              
                         label.htmlFor = "id";
@@ -255,21 +238,25 @@ require "conection.php";
                         
                         myDiv.appendChild(checkbox);
                         myDiv.appendChild(label);
-                        
+                        cont++;
+                        check.push("box"+cont);
+                        console.log(check);
                       }
                       
                     };
-                  
+                    
                     });
+                    
+                    
                   </script>
 
                 <br>
-
+                    
                 <label for="">Tipo Publicación: </label><br>
-                <select>
-                  <option  value="">Noticia</option>
-                  <option  value="">Reunión</option>
-                  <option  value="">Nose</option>
+                <select name="TipoPublicacion">
+                  <option >Noticia</option>
+                  <option >Reunión</option>
+                  <option >Nose</option>
                 </select><br><br>
                 <label for="">Fecha Inicial</label>
                 <input type="date" name="FechaInicial" id="FechaInicial" class="fecha" required><br><br>

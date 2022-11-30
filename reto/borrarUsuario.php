@@ -14,9 +14,9 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 
 
     $id=$_GET['id'];
-    //print_r($id);
+    // eliminamos el usuario
     $query= $db->prepare("DELETE FROM Usuario WHERE ID_Usuario='$id'");
-    //print_r ($query);
+
     $query->execute();
     
     header("Location:listaUsers");

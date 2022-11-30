@@ -30,7 +30,7 @@ require "conection.php";
 
       <!-- TÍTULO -->
       <title>Carrousel</title>
-
+      
       <!-- Montserrat -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,9 +61,7 @@ require "conection.php";
 
             //$id=$_GET['id'];
             //Consulta
-
             $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin");
-            //$consulta=$db->prepare("SELECT Descripcion FROM Publicacion WHERE ID_Publicacion='$id'");
             $consulta->execute();
             $data=$consulta->fetchAll();
 
@@ -78,6 +76,7 @@ require "conection.php";
       
         <div class="slideshow-container">
           <?php
+          //Muestra cada publicacion de la consulta
           foreach ($data as $valores):
             echo '<div class="publicacion fade">';
               echo '<div class="imagen"><img src="'. $valores["Multimedia"] .'" ;></div><br>';
@@ -85,7 +84,7 @@ require "conection.php";
                 echo '<div class="descripcion">';
                 echo '<div class="user"><p>'.$valores["Nom_Usuario"].'</p></div>';
                 
-                echo '<div><p>'.$valores["Descripcion"].'</p></div>';
+                echo '<div class="descrip"><p>'.$valores["Descripcion"].'</p></div>';
                 
                 echo '</div>';
                 
@@ -99,6 +98,7 @@ require "conection.php";
       <div style="text-align:center">
         <!-- <span class="dot"></span> -->
           <?php
+          //Muestra un circulo por cada publicacion de la consulta 
           foreach ($data as $valores):
             echo '<span class="dot"></span>';
           endforeach;
@@ -107,6 +107,7 @@ require "conection.php";
 </section>
 
   <?php
+  //Si no hay publicación, muestra el reloj
   if (empty($data)) {
     header("Location:reloj");
     exit();

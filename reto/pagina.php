@@ -43,6 +43,7 @@ require "conection.php";
       
   </head>
 <body>
+  <!-- cabecera -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
       <a class="navbar-brand" href="pagina">
@@ -61,6 +62,8 @@ require "conection.php";
           </li>
           <?php
 
+          // aparece historial si eres administrador
+
           if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
           
@@ -70,15 +73,20 @@ require "conection.php";
             echo '<a class="nav-link" href="historico">Historico</a>';
             echo '</li>';
 
+          
+            echo '<li class="nav-item">';
+            echo  '<a class="nav-link" href="departamentos">Ubicaciones</a>';
+            echo '</li>';
+
           }
 
           ?>
-          <li class="nav-item">
-            <a class="nav-link" href="departamentos">Ubicaciones</a>
-          </li>
-          <li class="nav-item dropdown">
+            <li class="nav-item dropdown">
 
             <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
+        
+
+            
             
             
             <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
@@ -97,9 +105,21 @@ require "conection.php";
               echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
               echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
               echo '</ul>';
+              
+
+            } else if (isset($_SESSION["rol"]) && $_SESSION["rol"]==2){
+    
+              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+              echo  '<li>';
+              echo  '<hr class="dropdown-divider">';
+              echo  '</li>';
+              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+              echo  '</li>';
+              
 
             } else {
-    
               echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
               echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
               echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
@@ -112,9 +132,8 @@ require "conection.php";
               echo  '</li>';
               echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Ubicaciones</a></li>';
               echo '</ul>';
-
             }
 
             ?>
@@ -128,12 +147,15 @@ require "conection.php";
     <div class="pagina">
         <div class="contenedor">
             <div id="datos" class="contenido"></div>
-            <button onclick="pagAnterior()"id="btn_anterior">Ant</button>&nbsp;
-            <button onclick="pagSiguiente()"id="btn_siguiente">Sig</button>
-            
+
+            <!-- botones para paginacion -->
+            <div class="botones">
+              <button onclick="pagAnterior()"id="btn_anterior" class="btn_anterior"><img src="img/anterior.png" alt=""></button>&nbsp;
+              <button onclick="pagSiguiente()"id="btn_siguiente" class="btn_siguiente"><img src="img/siguient.png" alt=""></button>
+            </div>
         </div>
 
-        
+        <!-- Pie de pagina -->
     <div class="pie-de-pagina">
       <footer>
       © Copyright 2022:  
@@ -157,7 +179,7 @@ require "conection.php";
     $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin");
     $consulta->execute();
     $data=$consulta->fetchAll();
-    
+    // Redirige al reloj si no hay publicaciones 
     if (empty($data)) {
       header("Location:reloj");
       exit();
@@ -165,6 +187,8 @@ require "conection.php";
 
 ?>
 <script>
+
+  // Script para paginación
     const datosTabla=<?php echo json_encode($data)?>;
     var obj = datosTabla;
     var pag = 1;
@@ -212,18 +236,18 @@ require "conection.php";
         }
         
         
-        if (pagina == 1) {
-            btn_anterior.style.visibility = "hidden";
-        } else {
-            btn_anterior.style.visibility = "visible";
-        }
-        //console.log(pagina);
-        //console.log(NumPaginas());
-        if (pagina == NumPaginas()) {
-            btn_siguiente.style.visibility = "hidden";
-        } else {
-            btn_siguiente.style.visibility = "visible";
-        }
+         if (pagina == 1) {
+             btn_anterior.style.visibility = "hidden";
+         } else {
+             btn_anterior.style.visibility = "visible";
+         }
+        // //console.log(pagina);
+        // //console.log(NumPaginas());
+         if (pagina == NumPaginas()) {
+             btn_siguiente.style.visibility = "hidden";
+         } else {
+             btn_siguiente.style.visibility = "visible";
+         }
     }
     //cuando cargue la pagina llamar a la funcion cambiar pagina pasandole el numero de la primera pagina
     window.onload = function() {

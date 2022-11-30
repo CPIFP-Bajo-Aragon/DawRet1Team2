@@ -32,6 +32,7 @@ require "conection.php";
       <!-- TÍTULO -->
       <title>Historico</title>
       
+      
   </head>
   <body>
   
@@ -55,64 +56,79 @@ require "conection.php";
           </li>
           <?php
 
-          if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
           
 
-          }else{
-            echo '<li class="nav-item">';
-            echo '<a class="nav-link active" href="historico">Historico</a>';
-            echo '</li>';
+}else{
+  echo '<li class="nav-item">';
+  echo '<a class="nav-link active" href="historico">Historico</a>';
+  echo '</li>';
 
-          }
 
-          ?>
-          <li class="nav-item">
-            <a class="nav-link" href="departamentos">Ubicaciones</a>
-          </li>
-          <li class="nav-item dropdown">
+  echo '<li class="nav-item">';
+  echo  '<a class="nav-link" href="departamentos">Ubicaciones</a>';
+  echo '</li>';
 
-            <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
-            
-            
-            <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
-              
-              <?php 
-              
-              
-              echo $_SESSION["nombre"];
-            
-              echo '</a>';
+}
 
-            //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
+?>
+  <li class="nav-item dropdown">
 
-            if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+  <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
 
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo '</ul>';
 
-            } else {
+  
+  
+  
+  <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
     
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo  '<li>';
-              echo  '<hr class="dropdown-divider">';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
-              echo '</ul>';
+    <?php 
+    
+    echo $_SESSION["nombre"];
+  
+    echo '</a>';
 
-            }
+  //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
 
-            ?>
+  if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo '</ul>';
+    
+
+  } else if (isset($_SESSION["rol"]) && $_SESSION["rol"]==2){
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    
+
+  } else {
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Ubicaciones</a></li>';
+    echo '</ul>';
+  }
+
+  ?>
 
 
           </li>
@@ -132,7 +148,7 @@ require "conection.php";
            <div class="buscador">
               <form action="buscadorHistorial" method="POST">
                 <input type="text" name="texto" id="texto">
-                <input type="submit" name="search" id="search" Value="BUSCAR">
+                <input id="buscar" type="submit" name="search" id="search" Value="BUSCAR">
               </form>
             </div><br><br>
 
@@ -152,13 +168,13 @@ require "conection.php";
           $consulta->execute();
           $data=$consulta->fetchAll();
        
-          echo '<table id="publi">';
-          echo '<tr><th>Noticia</th><th>Titulo</th><th>Tipo de Publicación</th><th>Estado</th><th>Fecha de Inicio<button type="button" name="ordenard" id="ordenar" value="Ordenar por Fecha" onclick="ordenaras()"><img id="img-ord" src="img/flechas.png"></button></th><th>Fecha de fin</th><th>Publicado por</th></tr>';
+          echo '<div class="tabla-historico"><table id="publi">';
+          echo '<tr><th>Noticia</th><th>Titulo</th><th>Tipo de Publicación</th><th>Estado</th><th>Fecha de Inicio<button type="button" name="ordenard" id="ordenar" value="Ordenar por Fecha" onclick="ordenaras()"><img id="img-ord" src="img/arriba.png"></button><button type="button" name="ordenard" id="ordenar" value="Ordenar por Fecha" onclick="ordendes()"><img id="img-ord" src="img/icons8-flecha-abajo-larga-50.png"></button></th><th>Fecha de fin</th><th>Publicado por</th></tr>';
           //Recorremos con foreach y mostramos los datos
             foreach ($data as $valores):
               echo '<tr><td><button id="show" onclick="verinfocliente('.$valores['ID_Publicacion'].');window.modal.showModal() "> Ver Noticia</button></td><td>'. $valores['Titulo'] .'</td><td>'. $valores['Tipo_Publicacion'] .'</td><td>'. $valores['Estado'] .'</td><td>'. $valores['Fecha_Inicio'] .'</td><td>'. $valores['Fecha_Fin'] .'</td><td>'. $valores['Nom_Usuario'] .'</td></tr>';
             endforeach;
-          echo '</table>';
+          echo '</table></div>';
          
         ?>
     <!--codigo javascript para mostrar los datos de ver noticias -->
@@ -178,7 +194,7 @@ require "conection.php";
         }
     </script>
     
-
+        <!-- modal que muestra la noticia seleccionada -->
       <dialog id="modal">
 
       <h2>Noticia <button  onclick="window.modal.close();"> X </button></h2><br>
@@ -191,7 +207,7 @@ require "conection.php";
           echo '<h3 id="titulo"></h3><br>';
           echo '</div>';
           echo '<p id="desc"><p>';
-          echo '<div class="imagen-noticia" id="img"><img id="img-bd" src=""></div>';
+          echo '<div class="imagen-modal" id="img"><img src=""></div>';
           echo '</div>';
           
           ?>
@@ -220,22 +236,30 @@ require "conection.php";
   </div>
   </body>
 </html>
+
   <script type="text/javascript">
+    
+
     const datosTabla=<?php echo json_encode($data)?>;
     //funcion para ordenar las publicaciones por orden de fecha de inicio 
     function ordenaras(){
       //cuando llamamos a la funcion le decimos a la tabla que tenemos que se ponga en display none
       const ocul=document.getElementById("publi").style = 'display: none;';
+
       //ordenamos la tabla con la funcion sort los parametros a y b nos indicaran que fecha es mayor o menor
       const d= datosTabla.sort((a, b) => new Date(a.Fecha_Inicio).getTime() > new Date(b.Fecha_Inicio).getTime());
-      //const a= datosTabla.sort((a, b) => new Date(b.Fecha_Inicio).getTime() > new Date(a.Fecha_Inicio).getTime());
-     
+      console.log(d);
+      //const a= d.sort((a, b) => new Date(b.Fecha_Inicio).getTime() > new Date(a.Fecha_Inicio).getTime());
+      //console.log(a);
     //creamos la tabla con javascript
     const contenedor = document.getElementById("resultado");
- 
+    
     const tabla = document.createElement("table");
+    tabla.setAttribute('id', 'publi');
  
     let tr = document.createElement("tr");
+
+   
       //array para poner en th y no tener que escribir tanto codigo
     const array = [
       {nombre: "Noticia"},
@@ -250,13 +274,24 @@ require "conection.php";
     for (let i = 0; i < array.length; i++) {
       let th = document.createElement("th");
       let thText = document.createTextNode(array[i].nombre);
+      /*if (array[i].nombre=="Fecha de Inicio") {
+          button= document.createElement("button");
+          button.innerHTML='<img id="img-ord" src="img/icons8-flecha-abajo-larga-50.png">';
+          //button.id="show";
+
+          //le damos al boton que hemos creado la funciones correspondientes
+          button.onclick=function () {
+            ordendes();
+          
+      };
+      th.appendChild(button);
+      }*/
       th.appendChild(thText);
       tr.appendChild(th);
+
       
     }
-    
-    
-    
+
     //recorremos el array con todos los datos y llenamos la tabla
      d.forEach((e) => {
 
@@ -268,6 +303,7 @@ require "conection.php";
       button= document.createElement("button");
       button.innerHTML="Ver Noticia";
       button.id="show";
+
       //le damos al boton que hemos creado la funciones correspondientes
       button.onclick=function () {
         verinfocliente(e.ID_Publicacion);
@@ -309,11 +345,108 @@ require "conection.php";
  
       tabla.appendChild(tr);
  
+      
     });
  
     contenedor.appendChild(tabla);
 
+
+    }
+
+    function ordendes(){
+      const ocul=document.getElementById("publi").style = 'display: none;';
+
+      //ordenamos la tabla con la funcion sort los parametros a y b nos indicaran que fecha es mayor o menor
+      //const d= datosTabla.sort((a, b) => new Date(a.Fecha_Inicio).getTime() > new Date(b.Fecha_Inicio).getTime());
+      //console.log(d);
+      const a= datosTabla.sort((a, b) => new Date(b.Fecha_Inicio).getTime() > new Date(a.Fecha_Inicio).getTime());
+      console.log(a);
+    //creamos la tabla con javascript
+    const contenedor = document.getElementById("resultado");
+    
+    const tabla = document.createElement("table");
+    tabla.setAttribute('id', 'publi');
+ 
+    let tr = document.createElement("tr");
+
+   
+      //array para poner en th y no tener que escribir tanto codigo
+    const array = [
+      {nombre: "Noticia"},
+      {nombre: "Titulo"},
+      {nombre: "Tipo de Publicacion"},
+      {nombre: "Estado"},
+      {nombre: "Fecha de Inicio"},
+      {nombre: "Fecha de Fin"},
+      {nombre: "Publicado por"},
+    ];
+    //recorremos array y le ponemos cada una a una columna
+    for (let i = 0; i < array.length; i++) {
+      let th = document.createElement("th");
+      let thText = document.createTextNode(array[i].nombre);
+      th.appendChild(thText);
+      tr.appendChild(th);
+
       
+    }
+
+    //recorremos el array con todos los datos y llenamos la tabla
+     a.forEach((e) => {
+
+      tabla.appendChild(tr);
+ 
+      tr = document.createElement("tr");
+      
+      td = document.createElement("td");
+      button= document.createElement("button");
+      button.innerHTML="Ver Noticia";
+      button.id="show";
+
+      //le damos al boton que hemos creado la funciones correspondientes
+      button.onclick=function () {
+        verinfocliente(e.ID_Publicacion);
+        window.modal.showModal();
+      };
+      //button.appendChild(Text);
+      td.appendChild(button);
+      tr.appendChild(td);
+ 
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Titulo);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+ 
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Tipo_Publicacion);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Estado);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Fecha_Inicio);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Fecha_Fin);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      tdText = document.createTextNode(e.Nom_Usuario);
+      td.appendChild(tdText);
+      tr.appendChild(td);
+ 
+      tabla.appendChild(tr);
+ 
+      
+    });
+ 
+    contenedor.appendChild(tabla);
     }
          
   </script>

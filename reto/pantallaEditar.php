@@ -1,6 +1,10 @@
 <?php
 
 session_start();
+if(!isset($_SESSION['id'])){
+  header("Location:index");
+  exit();
+}
 
 require "conection.php";
 
@@ -102,7 +106,7 @@ require "conection.php";
               echo  '</li>';
               echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
               echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
+              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Ubicaciones</a></li>';
               echo '</ul>';
 
             }
@@ -127,7 +131,7 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
     
     $id=$_GET['id'];
 
-    $consulta= $db->prepare("SELECT * FROM Pantalla WHERE ID_Pantalla='$id'");
+    $consulta= $db->prepare("SELECT p.ID_Pantalla,p.Nombre,p.Identificador,p.ID_Departamento, d.Nombre as Nom_dep, d.ID_Departamento as ID_Dep FROM Pantalla p, Departamento d WHERE ID_Pantalla='$id' and p.ID_Departamento=d.ID_Departamento");
     $consulta->execute();
     $data2=$consulta->fetchAll();
     
@@ -139,14 +143,14 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
     <div class="flex-supremo">
         <div class="flex-container">
             <div class="contenedor">
-            <div class="atras"><div class="item1"><h3>EDITAR PANTALLA </h3></div><div class="item2"><a href="listaUsers"><img src="img/atras.png" height="32px" ></a></div></div><br>
+            <div class="atras"><div class="item1"><h3>EDITAR PANTALLA </h3></div><div class="item2"><a href="listaPantallas"><img src="img/atras.png" height="32px" ></a></div></div><br>
             
             
                 <form action="editarPantalla.php?id=" method="POST">
 
                 <!-- <label for="">ID: </label><br> -->
                 <input type="hidden" name="ID_Pantalla" id="ID_Pantalla" autofocus="autofocus" value="<?php echo $data2[0]["ID_Pantalla"];?>">
-
+                
                 <label for="">Nombre: </label><br>
                 <input type="text" name="Nombre" id="Nombre" value="<?php echo $data2[0]["Nombre"];?>"><br><br>
 
@@ -154,7 +158,7 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
                 <input type="text" name="Identificador" id="Identificador" value="<?php echo $data2[0]["Identificador"];?>"><br><br>
 
                 <label for="">Ubicacion: </label>
-                <select name="Ubicacion" id="Departamento">
+                <select name="ID_Departamento"id="Departamento">
                         
                 <?php
 
@@ -166,15 +170,17 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
                   $query = $db->prepare("SELECT * FROM Departamento");
                   $query->execute();
                   $data = $query->fetchAll();
-
+                  echo '<option value="'.$data2[0]["ID_Dep"].'">'.$data2[0]["Nom_dep"].'</option>';
                   foreach ($data as $valores):
-                    echo '<option >'.$valores["Nombre"].'</option>';
+                    
+                    echo '<option value="'.$valores["ID_Departamento"].'">'.$valores["Nombre"].'</option>';
+                    
                   endforeach;
-
+                  
                   ?>
-
+                  
                 </select><br><br>
-
+                
                 <input type="submit" name="enviar" id="enviar" value="ENVIAR">
                 <input type="reset" name="reeset" id="reset" value="RESET">
 

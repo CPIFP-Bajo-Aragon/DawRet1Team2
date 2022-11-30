@@ -3,7 +3,7 @@ html, body{
     
     color: #333;
     font-weight: 400;
-    background-color: whitesmoke;
+    background-color: white;
     margin:0;
     padding:0;
     height: 150%;
@@ -11,6 +11,15 @@ html, body{
 
 
 .contenedor{
+    
+    padding: 20px;
+    width: 100%;
+    margin: 14px;
+    box-shadow: 0 0 16px 8px #b3b3b440;
+    border-radius: 10px;
+}
+
+.menu{
     
     padding: 20px;
     width: 100%;
@@ -176,7 +185,7 @@ aside ul li{
 }
 
 input[type=submit]{
-    background-color:#ffffff;
+    background-color: white;
     width: 100%;
     padding:5px 10px;
     border: 2px solid #333;
@@ -190,4 +199,23 @@ input[type=submit]:hover{
     color: #e59285;
 }
 
+@media (max-width: 660px) {
 
+    form{
+        padding: 3%;
+        font-size: 9px;
+    }
+
+    #expira{
+        font-size: 10px;
+    }
+
+    .menu{
+        padding: 5px;
+        width: 100%;
+        margin: 14px;
+        box-shadow: 0 0 16px 8px #b3b3b440;
+        border-radius: 10px;
+    }
+
+}

@@ -1,6 +1,10 @@
 <?php
 
-    function conectarBD()
+
+        // funcion para conectar con la base de datos
+    
+    
+        function conectarBD()
         {
             
             $servidor = "localhost";

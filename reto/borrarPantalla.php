@@ -14,9 +14,11 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 
 
     $id=$_GET['id'];
-    //print_r($id);
+
+    // eliminamos la Pantalla
+    
     $query= $db->prepare("DELETE FROM Pantalla WHERE ID_Pantalla='$id'");
-    //print_r ($query);
+
     $query->execute();
     
     header("Location:listaPantallas");

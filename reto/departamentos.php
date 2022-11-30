@@ -29,7 +29,7 @@ require "conection.php";
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
       <!-- TÍTULO -->
-      <title>Departamentos</title>
+      <title>Ubicaciones</title>
       
   </head>
 
@@ -55,63 +55,79 @@ require "conection.php";
           </li>
           <?php
 
-          if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
           
 
-          }else{
-            echo '<li class="nav-item">';
-            echo '<a class="nav-link" href="historico">Historico</a>';
-            echo '</li>';
+}else{
+  echo '<li class="nav-item">';
+  echo '<a class="nav-link" href="historico">Historico</a>';
+  echo '</li>';
 
-          }
 
-          ?>
-          <li class="nav-item">
-            <a class="nav-link active" href="departamentos">Ubicaciones</a>
-          </li>
-          <li class="nav-item dropdown">
+  echo '<li class="nav-item">';
+  echo  '<a class="nav-link active" href="departamentos">Ubicaciones</a>';
+  echo '</li>';
 
-            <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
-            
-            
-            <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
-              
-              <?php 
-              
-              echo $_SESSION["nombre"];
-            
-              echo '</a>';
+}
 
-            //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
+?>
+  <li class="nav-item dropdown">
 
-            if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+  <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
 
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo '</ul>';
 
-            } else {
+  
+  
+  
+  <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
     
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo  '<li>';
-              echo  '<hr class="dropdown-divider">';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
-              echo '</ul>';
+    <?php 
+    
+    echo $_SESSION["nombre"];
+  
+    echo '</a>';
 
-            }
+  //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
 
-            ?>
+  if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo '</ul>';
+    
+
+  } else if (isset($_SESSION["rol"]) && $_SESSION["rol"]==2){
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    
+
+  } else {
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Ubicaciones</a></li>';
+    echo '</ul>';
+  }
+
+  ?>
 
 
           </li>
@@ -125,10 +141,11 @@ require "conection.php";
   <!----------- CONTENIDO DE LA PÁGINA ----------->
   <div class="pagina">
             <aside>
-            <div  class="contenedor">
+            <div  class="menu">
 
                 <ul>
                     
+                <!-- submenu que muestra todas las ubicaciones en una lista, coin opcion de pulsar encima y que nos muestre las publicaciones de dicha ubicacion -->
                       <?php
 
                         $usuario = 'root';
@@ -136,7 +153,7 @@ require "conection.php";
                         
                         $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 
-                        $query = $db->prepare("SELECT * FROM Departamento");
+                        $query = $db->prepare("SELECT * FROM Departamento order by Nombre");
                         $query->execute();
                         $data = $query->fetchAll();
 
@@ -170,7 +187,7 @@ require "conection.php";
                     
             <?php
 
-              
+              // consulta que busca las publicaciones en funcion de la ubicacion que hayas pulsado
               
               $usuario = 'root';
               $password = 'Admin1234';
@@ -189,6 +206,7 @@ require "conection.php";
               $consulta->execute();
               $data=$consulta->fetchAll();
 
+              // aqui se muestran todas las publicaciones buscadas
               
               echo '<h2>Todas las publicaciones</h2>';
               foreach ($data as $valores):

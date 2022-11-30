@@ -55,63 +55,79 @@ require "conection.php";
           </li>
           <?php
 
-          if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
           
 
-          }else{
-            echo '<li class="nav-item">';
-            echo '<a class="nav-link" href="historico">Historico</a>';
-            echo '</li>';
+}else{
+  echo '<li class="nav-item">';
+  echo '<a class="nav-link" href="historico">Historico</a>';
+  echo '</li>';
 
-          }
 
-          ?>
-          <li class="nav-item">
-            <a class="nav-link" href="departamentos">Ubicaciones</a>
-          </li>
-          <li class="nav-item dropdown">
+  echo '<li class="nav-item">';
+  echo  '<a class="nav-link" href="departamentos">Ubicaciones</a>';
+  echo '</li>';
 
-            <a class="nav-link dropdown-toggle active"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
-            
-            
-            <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
-              
-              <?php 
-              
-              echo $_SESSION["nombre"];
-            
-              echo '</a>';
+}
 
-            //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
+?>
+  <li class="nav-item dropdown">
 
-            if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+  <a class="nav-link dropdown-toggle active"  role="button" data-bs-toggle="dropdown" aria-expanded="true">
 
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo '</ul>';
 
-            } else {
+  
+  
+  
+  <!-- NOMBRE DEL USUARIO ACTIVO Y SU FUNCIÓN -->
     
-              echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
-              echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
-              echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
-              echo  '<li>';
-              echo  '<hr class="dropdown-divider">';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
-              echo  '</li>';
-              echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Departamentos</a></li>';
-              echo '</ul>';
+    <?php 
+    
+    echo $_SESSION["nombre"];
+  
+    echo '</a>';
 
-            }
+  //AQUÍ, DEPENDIENDO DEL ROL DE CADA USUARIO, TENDRA LA OPCION DE AÑADIR USUARIO O NO
 
-            ?>
+  if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo '</ul>';
+    
+
+  } else if (isset($_SESSION["rol"]) && $_SESSION["rol"]==2){
+
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    
+
+  } else {
+    echo '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">';
+    echo  '<li><a class="dropdown-item" href="perfil">Perfil</a></li>';
+    echo  '<li><a class="dropdown-item" href="cerrarsesion">Cerrar Sesión</a></li>';
+    echo  '<li>';
+    echo  '<hr class="dropdown-divider">';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="gestionarPubli">Gestionar Publicaciones</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaUsers">Gestionar Usuarios</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaPantallas">Gestionar Pantallas</a></li>';
+    echo  '</li>';
+    echo  '<li><a class="dropdown-item" href="listaDepartamentos">Gestionar Ubicaciones</a></li>';
+    echo '</ul>';
+  }
+
+  ?>
 
 
           </li>
@@ -142,11 +158,17 @@ require "conection.php";
               $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario and Estado='Pendiente' ORDER BY ID_Publicacion DESC");
               $consulta->execute();
               $data=$consulta->fetchAll();
+
+              // si eres administrador podras editar y borrar
               if (isset($_SESSION["rol"]) && $_SESSION["rol"]==1) {
+
+                // si no hay publicaciones que mostrar, se mostrara este mensaje
 
                 if(empty($data)){
                   echo  '<h4 style="text-align:center; margin-top:50px">No hay publicaciones que gestionar</h4>';
                 }else{
+
+                // si hay publicaciones, se mostraran aqui
 
                 foreach ($data as $valores):
                   echo '<div class="contenido">';
