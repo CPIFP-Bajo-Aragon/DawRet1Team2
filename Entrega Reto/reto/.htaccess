@@ -1,0 +1,66 @@
+# ----------------------------------------------------------------------
+# Habilitar modulo mod_rewrite
+# ----------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks
+  RewriteEngine On
+</IfModule>
+
+RewriteBase /
+DirectoryIndex index.php
+
+# ----------------------------------------------------------------------
+# Paginas amigables
+# ----------------------------------------------------------------------
+RewriteRule ^index$ index.php [L,NC]
+RewriteRule ^inicioSesion$ inicioSesion.php [L,NC]
+RewriteRule ^pagina$ pagina.php [L,NC]
+RewriteRule ^listaUsers$ listaUsers.php [L,NC]
+RewriteRule ^listaDepartamentos$ listaDepartamentos.php [L,NC]
+RewriteRule ^listaPantallas$ listaPantallas.php [L,NC]
+RewriteRule ^reloj$ reloj.php [L,NC]
+RewriteRule ^error$ error.php [L,NC]
+RewriteRule ^departamentos$ departamentos.php [L,NC]
+RewriteRule ^formulario$ formulario.php [L,NC]
+RewriteRule ^perfil$ perfil.php [L,NC]
+RewriteRule ^cerrarsesion$ cerrarsesion.php [L,NC]
+RewriteRule ^gestionarPubli$ gestionarPubli.php [L,NC]
+RewriteRule ^historico$ historico.php [L,NC]
+RewriteRule ^buscadorDepartamento$ buscadorDepartamento.php [L,NC]
+RewriteRule ^funcionAddDepartamento$ funcionAddDepartamento.php [L,NC]
+RewriteRule ^funcionAddPantalla$ funcionAddPantalla.php [L,NC]
+RewriteRule ^depDesplegados$ depDesplegados.php [L,NC]
+RewriteRule ^buscadorHistorial$ buscadorHistorial.php [L,NC]
+RewriteRule ^buscadorPantalla$ buscadorPantalla.php [L,NC]
+RewriteRule ^buscadorUsuario$ buscadorUsuario.php [L,NC]
+RewriteRule ^añadirUsuario$ añadirUsuario.php [L,NC]
+RewriteRule ^pantallaEditar$ pantallaEditar.php [L,NC]
+RewriteRule ^UsuarioEditar$ UsuarioEditar.php [L,NC]
+RewriteRule ^edicionUsuario$ edicionUsuario.php [L,NC]
+RewriteRule ^editarUsuario$ editarUsuario.php [L,NC]
+RewriteRule ^editarAdministrador$ editarAdministrador.php [L,NC]
+RewriteRule ^carrousel$ carrousel.php [L,NC]
+RewriteRule ^enviar$ enviar.php [L,NC]
+RewriteRule ^buscadorHistorial$ buscadorHistorial.php [L,NC]
+
+# ----------------------------------------------------------------------
+# Paginas de error
+# ----------------------------------------------------------------------
+ErrorDocument 400 /error.php
+ErrorDocument 401 /error.php
+ErrorDocument 403 /error.php
+ErrorDocument 404 /error.php
+ErrorDocument 405 /error.php
+ErrorDocument 408 /error.php
+ErrorDocument 410 /error.php
+ErrorDocument 411 /error.php
+ErrorDocument 412 /error.php
+ErrorDocument 413 /error.php
+ErrorDocument 414 /error.php
+ErrorDocument 415 /error.php
+ErrorDocument 500 /error.php
+ErrorDocument 501 /error.php
+ErrorDocument 502 /error.php
+ErrorDocument 503 /error.php
+ErrorDocument 506 /error.php
