@@ -204,12 +204,25 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
               and Fecha_Inicio<=CURRENT_DATE() 
               and Ubicacion='$ubi'
               ORDER BY Fecha_Fin");
-
+              
 
               $consulta->execute();
               $data=$consulta->fetchAll();
 
               // aqui se muestran todas las publicaciones buscadas
+              for ($i=0; $i <count($data) ; $i++) { 
+                
+                 
+                $id_publicacionActual = $data[$i]["ID_Publicacion"];
+                $consulta=$db->prepare("SELECT Pantalla.Nombre
+                                            FROM Mostrar INNER JOIN Pantalla ON Mostrar.ID_Pantalla = Pantalla.ID_Pantalla
+                                            WHERE Mostrar.ID_Publicacion=$id_publicacionActual" );
+  
+                 $consulta->execute();
+                 $datas=$consulta->fetchAll();
+                 $data[$i]["pantallas"]=$datas;
+  
+              }
 
               echo '<h2>'.$ubi.'</h2>';
                         
@@ -224,6 +237,21 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
                 echo '<div class="titulo-noticia">';
                 echo '<p id="expira">Publicado por '.$valores['Nom_Usuario'].' el dia '.$valores['Fecha_Inicio'].'</p>';
                 echo '<p id="expira"> Expira el: '.$valores['Fecha_Fin'].'</p></div>';
+                $pantallas_txt = '';
+                
+                $cont=1;
+                foreach ($valores['pantallas'] as $pantalla) {
+                  
+                 
+                  if ($cont<count($valores['pantallas'])) {
+                    $pantallas_txt.=$pantalla['Nombre'].", ";
+                  }else{
+                    $pantallas_txt.=$pantalla['Nombre'];
+                  }
+                  $cont++;
+                }
+               
+                echo '<p id="expira">Corresponde a la pantalla: '.$pantallas_txt.'</p>';
                 echo '<h3>'.$valores['Titulo'].'</h3><br>';
                 
                 echo '<p>'.$valores['Descripcion'].'<p>';

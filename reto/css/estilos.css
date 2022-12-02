@@ -375,18 +375,9 @@ dialog button{
     width: 24px;
 }
  
-.atras{
-    display: flex;
-    flex-direction: row;
-}
 
-.item1{
-    width: 100%;
-}
 
-.item2{
-    padding: 0 15px;
-}
+
 
 .botones{
     text-align: center;
@@ -470,9 +461,6 @@ dialog button{
 
 @media (max-width: 660px) {
 
-  
-
-    
     .cabecera{
 
         display: grid;
@@ -488,14 +476,10 @@ dialog button{
         position:absolute;
     }
 
-
-
     .tabla-historico table{
         margin: 25px 0; 
         font-size: 11px;
     }
-
-    
 
     .tabla-historico th, td{
         padding:10px 5px;
@@ -516,13 +500,11 @@ dialog button{
         font-size: 10px;
     }
 
-
     .tabla-gestion table{
         margin: 25px 0; 
         font-size: 11px;  
     }
     
-
     .tabla-gestion th, td{
         padding:10px 5px;
 
@@ -539,9 +521,6 @@ dialog button{
         margin-right: 0px;
     }
 
-    
-
-
     .pie-de-pagina{
         position:absolute;
     }
@@ -549,7 +528,6 @@ dialog button{
     #img-ord{
         width: 12px;
     }
-
 
     #buscar{
         font-size: 10px;
@@ -561,7 +539,6 @@ dialog button{
         width: 30%;
     }
    
-    
     #act-btn{
         width: 30%;
 
@@ -594,28 +571,22 @@ dialog button{
         padding: 8px   ;
         margin:0px 5px;
         width: 35%;
-    
-        
+     
     }
 
     .gest-icons{
         height: 24px;
     }
 
-   
-
     .imagen-modal img{
 
         max-width: 100%;
     }
 
-    
     #publi{
         margin: 25px 0; 
         font-size: 11px;
     }
-
-    
 
     #publi th, td{
         padding:10px 5px;
@@ -630,6 +601,154 @@ dialog button{
     #publi th:last-child{
         float: none;
         margin-right: 0px;
+    }
+    
+
+}
+
+@media (max-width: 530px) {
+
+
+    .tabla-historico table{
+        margin: 20px 0; 
+        font-size: 8px;
+    }
+
+    .tabla-historico th, td{
+        padding:6px 3px;
+    
+    }
+
+    .tabla-historico td:last-child{
+        float: none;
+        margin-left: 0px;
+    }
+
+    .tabla-historico th:last-child{
+        float: none;
+        margin-right: 0px;
+    }
+
+    #show{
+        font-size: 8px;
+    }
+
+    .tabla-gestion table{
+        margin: 20px 0; 
+        font-size: 8px;  
+    }
+    
+    .tabla-gestion th, td{
+        padding:6px 3px;
+
+    }
+
+    .tabla-gestion td:last-child{
+        float: right;
+        margin-right: 0px;
+    }
+
+    .tabla-gestion th:last-child{
+        display: flex;
+        align-items: flex-end;
+        margin-right: 0px;
+    }
+
+    .pie-de-pagina{
+        position:absolute;
+    }
+
+    #img-ord{
+        width: 8px;
+    }
+
+    #buscar{
+        font-size: 8px;
+    }
+
+    .buscador input[type=submit]{
+        
+        
+        width: 35%;
+    }
+   
+    #act-btn{
+        width: 30%;
+
+        padding: 10px;
+
+    }
+    
+    #rchz-btn{
+        width: 30%;
+        padding: 10px;
+    }
+
+    #expira{
+        font-size: 10px;
+        width: 30%;
+        color: grey;
+        float: right;
+    }
+    
+    #usuario{
+        font-size: 10px;
+        width: 70%;
+        color:grey;
+        float: left;
+    }
+
+    #add-btn{
+        margin-top: 0;
+        font-size: 12px;
+        padding: 6px   ;
+        margin:0px 5px;
+        width: 30%;
+     
+    }
+
+    .gest-icons{
+        height: 24px;
+    }
+
+    .imagen-modal img{
+
+        max-width: 100%;
+    }
+
+    #publi{
+        margin: 20px 0; 
+        font-size: 8px;
+    }
+
+    #publi th, td{
+        padding:6px 3px;
+    
+    }
+
+    #publi td:last-child{
+        float: none;
+        margin-left: 0px;
+    }
+
+    #publi th:last-child{
+        float: none;
+        margin-right: 0px;
+    }
+
+    .buscador input[type=text]{
+        
+        height: 34px;
+       
+    
+    }
+    
+    .buscador input[type=submit]{
+        
+        width: 30%;
+        height: 34px;
+        font-size: 8px;
+        padding: 0px;
     }
     
 

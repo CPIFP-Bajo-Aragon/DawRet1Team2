@@ -6,7 +6,7 @@ if(!isset($_SESSION['id'])){
   exit();
 }
 
-require "conection.php";
+require "conection.php"; 
 
 ?>
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ require "conection.php";
     
     <!-- CSS -->
 
-    <link rel="stylesheet" href="css/estilos.css">
+    <!-- <link rel="stylesheet" href="css/estilos.css"> -->
     <link rel="stylesheet" href="css/formulario.css"> 
 
     <!-- ICONO DE PAGINA
@@ -143,7 +143,7 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
     <div class="flex-supremo">
         <div class="flex-container">
             <div class="contenedor">
-            <div class="atras"><div class="item1"><h3>EDITAR PANTALLA </h3></div><div class="item2"><a href="listaPantallas"><img src="img/atras.png" height="32px" ></a></div></div><br>
+            <div class="atras"><div class="item1"><h3>EDITAR PANTALLA </h3></div><div class="item2"><a href="listaPantallas"><img src="img/atras.png" id="flecha" ></a></div></div><br><br>
             
             
                 <form action="editarPantalla.php?id=" method="POST">
@@ -155,13 +155,32 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
                 <input type="text" name="Nombre" id="Nombre" value="<?php echo $data2[0]["Nombre"];?>"><br><br>
 
                 <label for="">Identificador: </label><br>
-                <input type="text" name="Identificador" id="Identificador" value="<?php echo $data2[0]["Identificador"];?>"><br><br>
+                <input type="text" name="Identificador" id="macAddress" value="<?php echo $data2[0]["Identificador"];?>"><br><br>
+                <script>
+                  var macAddress = document.getElementById("macAddress");
 
+                  function formatMAC(e) {
+                      var r = /([a-f0-9]{2})([a-f0-9]{2})/i,
+                          //Valida si las letras estan dentro de la A a la F 
+                          //Si no, coloca espacio en blanco
+                          str = e.target.value.replace(/[^a-f0-9]/ig, "");
+
+                      while (r.test(str)) {
+                          //Coloca : despues de cada 2 digitos
+                          str = str.replace(r, '$1' + ':' + '$2');
+                      }
+
+                      e.target.value = str.slice(0, 17);
+                  };
+
+                  macAddress.addEventListener("keyup", formatMAC, false);
+
+                  </script>
                 <label for="">Ubicacion: </label>
                 <select name="ID_Departamento"id="Departamento">
                         
                 <?php
-
+ 
                   $usuario = 'root';
                   $password = 'Admin1234';
                   

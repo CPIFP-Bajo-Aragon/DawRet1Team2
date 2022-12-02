@@ -167,7 +167,7 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
       <div class="flex-supremo">
         <div class="flex-container">
             <div class="contenedor">
-            <div class="atras"><div class="item1"><h3>EDITAR USUARIO </h3></div><div class="item2"><a href="listaUsers"><img src="img/atras.png" height="32px" ></a></div></div><br>
+            <div class="atras"><div class="item1"><h3>EDITAR USUARIO </h3></div><div class="item2"><a href="listaUsers"><img src="img/atras.png" id="flecha" ></a></div></div><br><br>
             <!-- formulario para editar los usuarios. El php que aparece en cada input es para seleccionar el valor que tiene cada campo -->
                 <form action="editarUsuario.php?id=" method="POST">
 

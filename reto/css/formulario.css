@@ -30,7 +30,7 @@ html, body{
     text-shadow: none;
     text-transform: uppercase;
     transition: all 0.4s ease 0s;
-    width: 49.5%;
+    width: 49%;
 }
 
 #reset{
@@ -46,7 +46,7 @@ html, body{
     text-shadow: none;
     text-transform: uppercase;
     transition: all 0.4s ease 0s;
-    width: 49.5%;
+    width: 49%;
     
 }
 
@@ -206,6 +206,120 @@ h3::after{
     width:100%;
     margin-bottom: 0px;
 }
+
+.atras{
+    height: 32px;
+}
+
+.atras{
+    display: flex;
+    flex-direction: row;
+}
+
+.item1{
+    width: 100%;
+}
+
+
+#flecha{
+    float:right;
+    height: 32px;
+}
+
+@media (max-width: 660px) {
+
+    
+    .item1{
+        width: 92%;
+    }
+
+    .item2{
+        width:8%;
+    }
+
+    .item1 h3{
+       font-size: 20px;
+    }
+
+    #flecha{
+        height: 22px;
+    }
+
+    label{
+       font-size: 12px;
+    }
+
+    #enviar{
+        font-size: 12px;
+        padding: 0px 20px 0;
+    }
+
+    #reset{
+        font-size: 12px;
+        padding: 0px 20px 0;
+    }
+
+    select > option{
+        font-size: 12px;
+        height: 32px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    select{
+        font-size: 12px;
+        height: 32px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    input[type=text]{
+        font-size: 12px;
+        height: 32px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    input[type=password]{
+        font-size: 12px;
+        height: 32px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    input[type=email]{
+        font-size: 12px;
+        height: 32px;
+        padding: 0 15px;
+        width: 100%;
+    }
+    
+    input[type=file]{
+        font-size: 12px;
+        max-width: 100%;
+        width: 100%;
+        margin-right: 20px;
+    }
+    
+    input[type=file]::file-selector-button {
+        font-size: 12px;
+        padding: 10px 15px;
+        margin-right: 20px;
+      }
+      
+    input[type=date]{
+        font-size: 12px;
+        height: 32px;
+        padding: 0 15px;
+        width: 100%;
+    }
+
+    h3{
+        font-size: 18px;
+    }
+
+}
+
 
 
 

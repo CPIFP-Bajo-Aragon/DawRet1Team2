@@ -194,29 +194,69 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
               $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
               //Consulta
               $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Ubicacion, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario 
-              as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario 
-              FROM Publicacion, Usuario 
-              WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario 
-              AND Fecha_Fin>=CURRENT_DATE() 
-              and Estado='Aceptada' 
-              and Fecha_Inicio<=CURRENT_DATE() 
-              ORDER BY Fecha_Fin");
+                                              as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario 
+                                        FROM Publicacion, Usuario 
+                                        WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario 
+                                          AND Fecha_Fin>=CURRENT_DATE() 
+                                          and Estado='Aceptada' 
+                                          and Fecha_Inicio<=CURRENT_DATE() 
+                                        ORDER BY Fecha_Fin");
+              /*$consulta=$db->prepare("SELECT p.ID_Publicacion, p.Titulo, p.Descripcion, p.Multimedia, p.Tipo_Publicacion, p.Estado, p.Fecha_Inicio, p.Fecha_Fin, p.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario, Pantalla.Nombre as Pan_Nom 
+              FROM Usuario,((Mostrar INNER JOIN Pantalla ON Mostrar.ID_Pantalla = Pantalla.ID_Pantalla) INNER JOIN Publicacion p ON Mostrar.ID_Publicacion = p.ID_Publicacion)
+               WHERE Usuario.ID_Usuario=p.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin" );
+              */
 
 
               $consulta->execute();
               $data=$consulta->fetchAll();
-
+                        
               // aqui se muestran todas las publicaciones buscadas
-              
+              /*print_r($data[2]);
+              print_r("<br>");
+              print_r($data[3]);
+              print_r("<br>");
+              print_r($data[4]);
+            exit();*/
+
+            for ($i=0; $i <count($data) ; $i++) { 
+              // $consulta=$db->prepare("SELECT Pantalla.Nombre as Pan_Nom 
+              // FROM Usuario,((Mostrar INNER JOIN Pantalla ON Mostrar.ID_Pantalla = Pantalla.ID_Pantalla) INNER JOIN Publicacion p ON Mostrar.ID_Publicacion = p.ID_Publicacion)
+              //  WHERE Usuario.ID_Usuario=p.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin" );
+               
+              $id_publicacionActual = $data[$i]["ID_Publicacion"];
+              $consulta=$db->prepare("SELECT Pantalla.Nombre
+                                          FROM Mostrar INNER JOIN Pantalla ON Mostrar.ID_Pantalla = Pantalla.ID_Pantalla
+                                          WHERE Mostrar.ID_Publicacion=$id_publicacionActual" );
+
+               $consulta->execute();
+               $datas=$consulta->fetchAll();
+               $data[$i]["pantallas"]=$datas;
+
+            }
               echo '<h2>Todas las publicaciones</h2>';
               foreach ($data as $valores):
                 
-                 
-                
+               
                 echo '<div class="contenido">';
                 echo '<div class="titulo-noticia">';
                 echo '<p id="expira">Publicado por '.$valores['Nom_Usuario'].' el dia '.$valores['Fecha_Inicio'].'</p>';
                 echo '<p id="expira"> Expira el: '.$valores['Fecha_Fin'].'</p></div>';
+                $pantallas_txt = '';
+                $cont=1;
+                foreach ($valores['pantallas'] as $pantalla) {
+                  
+                 
+                  if ($cont<count($valores['pantallas'])) {
+                    $pantallas_txt.=$pantalla['Nombre'].", ";
+                  }else{
+                    $pantallas_txt.=$pantalla['Nombre'];
+                  }
+                  $cont++;
+                }
+               
+                
+                echo '<p id="expira">Corresponde a la pantalla: '.$pantallas_txt.'</p>';
+
                 echo '<h3>'.$valores['Titulo'].'</h3><br>';
                 
                 echo '<p>'.$valores['Descripcion'].'<p>';
@@ -225,6 +265,7 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
                 echo '</div>';
                 
               endforeach;
+            
             
              ?>
              

@@ -181,10 +181,10 @@ require "conection.php";
     $consulta->execute();
     $data=$consulta->fetchAll();
     // Redirige al reloj si no hay publicaciones 
-    if (empty($data)) {
-      header("Location:reloj");
-      exit();
-    }
+    // if (empty($data)) {
+    //   header("Location:reloj");
+    //   exit();
+    // }
 
 ?>
 <script>
@@ -254,8 +254,8 @@ require "conection.php";
     window.onload = function() {
         cambiarPag(1);
     };
-    </script>
-    <!--Recargas la pagina cada cierto tiempo -->
-    <script type="text/javascript">
-        setTimeout(function(){ location.reload(1);}, 30000);
-    </script>
+      </script>
+     <!--Recargas la pagina cada cierto tiempo -->
+     <!-- <script type="text/javascript"> -->
+         <!-- setTimeout(function(){ location.reload(1);}, 30000); -->
+     <!-- </script> -->

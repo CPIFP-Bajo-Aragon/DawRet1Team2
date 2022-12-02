@@ -96,9 +96,9 @@ $data=$consulta->fetchAll();*/
             
             </form>
             <!--Recargas la paginas cada cierto tiempo -->
-            <script type="text/javascript">
+            <!-- <script type="text/javascript">
                 setTimeout(function(){ location.reload(1);}, 15000);
-            </script>
+            </script> -->
         </div>
 
 </body>
