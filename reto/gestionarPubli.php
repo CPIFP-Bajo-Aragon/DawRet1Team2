@@ -212,12 +212,13 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
 
 
   <div class="pie-de-pagina">
-    <footer>
-    © Copyright 2022:  
-    <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
-    INFOJOVE
-    </footer>
-  </div>
+      <footer>
+      © Copyright 2022:
+      <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
+      INFOJOVE
+      <a href="img/manual.pdf">Ayuda</a>
+      </footer>
+    </div>  
 
   <!----------- FIN DEL FOOTER ----------->
 

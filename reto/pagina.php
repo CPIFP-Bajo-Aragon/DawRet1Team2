@@ -158,9 +158,10 @@ require "conection.php";
         <!-- Pie de pagina -->
     <div class="pie-de-pagina">
       <footer>
-      © Copyright 2022:  
+      © Copyright 2022:
       <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
       INFOJOVE
+      <a href="img/manual.pdf">Ayuda</a>
       </footer>
     </div>    
 

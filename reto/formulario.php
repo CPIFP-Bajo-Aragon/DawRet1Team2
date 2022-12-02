@@ -256,7 +256,9 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
                 <select name="TipoPublicacion">
                   <option >Noticia</option>
                   <option >Reunión</option>
-                  <option >Nose</option>
+                  <option >Charla</option>
+                  <option >Guardia</option>
+                  <option >Otros</option>
                 </select><br><br>
                 <label for="">Fecha Inicial</label>
                 <input type="date" name="FechaInicial" id="FechaInicial" class="fecha" required><br><br>
@@ -276,13 +278,14 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
     <!----------- FOOTER ----------->
 
 
-      <div class="pie-de-pagina">
-        <footer>
-        © Copyright 2022:  
-        <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
-        INFOJOVE
-        </footer>
-      </div>
+    <div class="pie-de-pagina">
+      <footer>
+      © Copyright 2022:
+      <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
+      INFOJOVE
+      <a href="img/manual.pdf">Ayuda</a>
+      </footer>
+    </div>  
 
       <!----------- FIN DEL FOOTER ----------->
 
@@ -290,7 +293,7 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
   </body>
 </html>
 
-<script>
+<script> 
 
 function validarFecha(fecha) {
     var fechaIni=document.getElementById('FechaInicial').value;

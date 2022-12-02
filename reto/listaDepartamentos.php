@@ -205,7 +205,7 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
                 <!--Funcion javascript para confirmar si queremos borrar, si le damos a cancelar se ejecuta el prevendefult que cancela el evento de borrar  -->
                 <script>
                     function confirmar(e){
-                        var res = confirm('¿Estas seguro de que quieres BORRAR este departamento?');
+                        var res = confirm('¿Estas seguro de que quieres BORRAR esta ubicación?');
                         if(res == false){
                             e.preventDefault();
                         }
@@ -219,13 +219,14 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
   <!----------- FOOTER ----------->
 
 
-      <div class="pie-de-pagina">
-        <footer>
-        © Copyright 2022:  
-        <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
-        INFOJOVE
-        </footer>
-      </div>
+  <div class="pie-de-pagina">
+      <footer>
+      © Copyright 2022:
+      <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
+      INFOJOVE
+      <a href="img/manual.pdf">Ayuda</a>
+      </footer>
+    </div>  
 
   <!----------- FIN DEL FOOTER ----------->
 

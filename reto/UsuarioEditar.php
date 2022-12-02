@@ -11,7 +11,7 @@ if(!isset($_SESSION['id'])){
 require "conection.php";
 
 
-
+ 
 ?>
 
 <!DOCTYPE html>
@@ -142,6 +142,7 @@ if (isset($_SESSION["rol"]) && $_SESSION["rol"]==3) {
       </div>
     </div>
   </nav>
+  <!----------- FIN DE CABECERA Y MENÚ ----------->
     <div class="pagina">
         <!----------- CONTENIDO DE LA PÁGINA ----------->
 
@@ -192,11 +193,13 @@ $db = new PDO('mysql:host=localhost;dbname=Prueba2', $usuario, $password);
 </div>
 
         
-    <div class="pie-de-pagina">
+        <!-- Pie de pagina -->
+        <div class="pie-de-pagina">
       <footer>
-      © Copyright 2022:  
+      © Copyright 2022:
       <a href="https://cpifpbajoaragon.com">CPIFP Bajo Aragón</a>
       INFOJOVE
+      <a href="img/manual.pdf">Ayuda</a>
       </footer>
     </div>    
 

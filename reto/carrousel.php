@@ -61,16 +61,39 @@ require "conection.php";
 
             //$id=$_GET['id'];
             //Consulta
-            $consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin");
+            /*$consulta=$db->prepare("SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin");
             $consulta->execute();
-            $data=$consulta->fetchAll();
+            $data=$consulta->fetchAll();*/
 
-            //echo "SELECT ID_Publicacion, Titulo, Descripcion, Multimedia, Tipo_Publicacion, Estado, Fecha_Inicio, Fecha_Fin, Publicacion.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Publicacion, Usuario WHERE Usuario.ID_Usuario=Publicacion.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin";
-            //print_r ($data);
+            $ipAddress=$_SERVER['REMOTE_ADDR'];
+            $arp=`arp -n $ipAddress`;
+            $string = str_replace(' ', '', $arp);
+            $lines=explode(":", $string);
+            $first = substr($lines[0], -2).":";
+            $last = substr($lines[5], 0, 2);
 
-
-
+            $mid="";
+            for ($i=1; $i <=4 ; $i++) { 
+              
+              $mid .= $lines[$i].":";
+              
+              
+            }
+            
+            $mac = $first.$mid.$last;
+             
+              
+            
+                $consulta=$db->prepare("SELECT p.ID_Publicacion, p.Titulo, p.Descripcion, p.Multimedia, p.Tipo_Publicacion, p.Estado, p.Fecha_Inicio, p.Fecha_Fin, p.ID_Usuario as ID_Usuario, Usuario.Nom_Usuario as Nom_Usuario FROM Usuario,((Mostrar INNER JOIN Pantalla ON Mostrar.ID_Pantalla = Pantalla.ID_Pantalla) INNER JOIN Publicacion p ON Mostrar.ID_Publicacion = p.ID_Publicacion) WHERE Pantalla.Identificador='$mac' AND Usuario.ID_Usuario=p.ID_Usuario AND Fecha_Fin>=CURRENT_DATE() and Estado='Aceptada' and Fecha_Inicio<=CURRENT_DATE() ORDER BY Fecha_Fin" );
+                //print_r($consulta);
+                $consulta->execute();
+                $data=$consulta->fetchAll();
+                // print_r($data);
+                // exit();
+                
+               
           ?>
+            
          
   <section>  
       
@@ -79,15 +102,18 @@ require "conection.php";
           //Muestra cada publicacion de la consulta
           foreach ($data as $valores):
             echo '<div class="publicacion fade">';
-              echo '<div class="imagen"><img src="'. $valores["Multimedia"] .'" ;></div><br>';
-                echo '<h2>'.$valores["Titulo"].'</h2>';
+                echo '<br><h2>'.$valores["Titulo"].'</h2>';
                 echo '<div class="descripcion">';
                 echo '<div class="user"><p>'.$valores["Nom_Usuario"].'</p></div>';
                 
                 echo '<div class="descrip"><p>'.$valores["Descripcion"].'</p></div>';
                 
                 echo '</div>';
-                
+                if($valores["Multimedia"]==0){
+                  echo '<br>';
+                }else{
+                  echo '<div class="imagen"><img src="'. $valores["Multimedia"] .'" ;></div><br>';
+                }
             echo '</div>';
             
           endforeach;
@@ -108,10 +134,11 @@ require "conection.php";
 
   <?php
   //Si no hay publicación, muestra el reloj
-  if (empty($data)) {
-    header("Location:reloj");
-    exit();
-  }
+    if (empty($data)) {
+      header("Location:reloj");
+      exit();
+    }
+  
   ?>
 
   <script>
